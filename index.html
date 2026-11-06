@@ -154,6 +154,31 @@ footer{text-align:center;color:var(--dim);font-size:12.5px;margin-top:50px}
 .agree.shake{animation:shk .35s}@keyframes shk{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 .amsg{font-size:13px;text-align:center;color:var(--warn);background:#FFB5471a;border:1px solid #FFB54740;border-radius:10px;padding:9px;margin-bottom:12px}
 .or{display:flex;align-items:center;gap:10px;color:var(--dim);font-size:12.5px;margin:16px 0 12px}.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.side{position:fixed;top:0;left:0;bottom:0;width:264px;z-index:45;background:rgba(13,16,28,.86);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:14px 10px;transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+[data-theme=light] .side{background:rgba(255,255,255,.88)}
+body:not(.side-open) .side{transform:translateX(-100%)}
+.side-top{display:flex;gap:6px;align-items:center;margin-bottom:10px}
+.newchat{flex:1;display:flex;align-items:center;gap:9px;border:1px solid var(--line);background:var(--panel);color:var(--text);font:inherit;font-size:14.5px;font-weight:600;padding:11px 12px;border-radius:12px;cursor:pointer;transition:.15s}
+.newchat:hover{border-color:var(--line2);background:var(--panel2)}
+.side-x{display:none}
+.side-search{border:1px solid var(--line);background:var(--panel2);color:var(--text);font:inherit;font-size:13.5px;padding:9px 12px;border-radius:10px;outline:none;margin-bottom:8px}
+.side-search:focus{border-color:var(--pri)}
+.side-list{flex:1;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--line2) transparent;margin:0 -4px;padding:0 4px}
+.side-lbl{font-size:12px;font-weight:700;color:var(--dim);padding:12px 10px 6px}
+.sitem{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:10px;cursor:pointer;color:var(--text);font-size:14px;transition:.12s}
+.sitem:hover,.sitem.on{background:var(--panel2)}.sitem.on{box-shadow:inset 3px 0 0 var(--pri)}
+.sitem .ic{flex:0 0 auto;font-size:14px;opacity:.85}
+.sitem .t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sitem .del{flex:0 0 auto;border:0;background:none;color:var(--dim);cursor:pointer;font-size:13px;padding:2px 4px;border-radius:6px;opacity:0}
+.sitem:hover .del{opacity:1}.sitem .del:hover{color:#FF6B6B;background:var(--panel)}
+.side-empty{color:var(--dim);font-size:13px;text-align:center;padding:30px 10px;line-height:1.6}
+.side-more{border:0;background:none;color:var(--muted);font:inherit;font-size:13.5px;padding:10px;border-radius:10px;cursor:pointer;text-align:left}
+.side-more:hover{background:var(--panel2);color:var(--text)}
+.side-foot{border-top:1px solid var(--line);padding-top:12px;margin-top:8px;font-size:12.5px;color:var(--dim);line-height:1.5}
+.side-foot .loginbtn{width:100%;margin:8px 0 0}
+.side-scrim{display:none}
+@media (min-width:1100px){body.side-open .wrap{margin-left:max(284px,calc(50vw - 328px));margin-right:auto}}
+@media (max-width:1099px){.side-x{display:grid}body.side-open .side-scrim{display:block;position:fixed;inset:0;background:#0007;z-index:44}}
 .hidden{display:none!important}
 .bar textarea{scrollbar-width:none}.bar textarea::-webkit-scrollbar{display:none}
 @media (max-width:600px){
@@ -181,9 +206,17 @@ footer{text-align:center;color:var(--dim);font-size:12.5px;margin-top:50px}
 <body>
 <video class="bgvid" autoplay muted loop playsinline preload="auto"><source src="bg.mp4" type="video/mp4"></video>
 <div class="bgov"></div>
+<aside class="side" id="side">
+  <div class="side-top"><button class="newchat" id="sNew"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>새 채팅</button><button class="xbtn side-x" id="sHide" title="사이드바 닫기">✕</button></div>
+  <input class="side-search" id="sSearch" placeholder="🔍 기록 검색">
+  <div class="side-list" id="sList"></div>
+  <button class="side-more hidden" id="sMore">모두 표시</button>
+  <div class="side-foot" id="sFoot"></div>
+</aside>
+<div class="side-scrim" id="sideScrim"></div>
 <div class="wrap">
 <header>
-  <div class="logo"><div class="mark"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 3l2.2 5.3L20 9l-4.4 3.8L17 19l-5-3-5 3 1.4-6.2L4 9l5.8-.7z"/></svg></div>PromptStudio</div>
+  <div class="logo"><button class="ib" id="btnSide" title="기록 사이드바"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg></button><div class="mark"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 3l2.2 5.3L20 9l-4.4 3.8L17 19l-5-3-5 3 1.4-6.2L4 9l5.8-.7z"/></svg></div>PromptStudio</div>
   <div class="hdr">
     <button class="loginbtn" id="btnLogin">로그인</button>
     <div class="user hidden" id="userBox"><button class="ubtn" id="btnUser"><img id="uAvatar" alt=""><span id="uName"></span></button>
@@ -575,8 +608,8 @@ async function chatSend(text){busy=true;autosize();const sb=$('#btnSend');const 
  try{await chatAI(t=>{ai.text=t;if(tmr)return;tmr=setTimeout(()=>{tmr=0;renderThread(true);},40);});}
  catch(e){ai.text=e.message==='NOKEY'?'⚠️ AI 키가 연결되지 않았어요. 오른쪽 위 ⚙️ 설정에서 API 키를 넣어 주세요.':'⚠️ 답변을 받지 못했어요: '+String(e.message).slice(0,120);}
  if(tmr)clearTimeout(tmr);renderThread(false);LS.set('chat',S.chat.slice(-40));busy=false;sb.innerHTML=icon;autosize();
- if(!ai.text.startsWith('⚠️')){await dbAddChat('user',text);await dbAddChat('model',ai.text);}}
-$('#btnNewChat').onclick=()=>{S.chat=[];LS.set('chat',[]);dbClearChat();renderThread(false);$('#chat').classList.add('hidden');q.focus();};
+ if(!ai.text.startsWith('⚠️'))await saveChatTurn(text,ai.text);}
+$('#btnNewChat').onclick=newChat;
 $('#btnChatClose').onclick=()=>$('#chat').classList.add('hidden');
 $('#btnRegen').onclick=()=>S.last&&generate(S.last.req);
 
@@ -662,26 +695,68 @@ $('#aForm').onsubmit=async e=>{e.preventDefault();if(!sb)return;if(needAgree())r
  if(aMode==='signup'&&!r.data.session){$('#aMsg').textContent='가입 확인 메일을 보냈어요. 메일의 링크를 눌러 주세요.';return;}
  authModal(false);$('#aForm').reset();};
 $('#btnUser').onclick=e=>{e.stopPropagation();$('#userMenu').classList.toggle('open');};
-$('#btnLogout').onclick=async()=>{await sb.auth.signOut();closeMenus();S.chat=[];renderThread(false);$('#chat').classList.add('hidden');toast('로그아웃했어요');};
+$('#btnLogout').onclick=async()=>{await sb.auth.signOut();closeMenus();S.chat=[];S.convId=null;renderThread(false);$('#chat').classList.add('hidden');loadSide();toast('로그아웃했어요');};
 $('#btnMyHist').onclick=()=>{closeMenus();drawer(true);};
 /* DB 동기화: 로그인하면 보관함·채팅이 내 계정에 저장됨 */
-async function dbSavePrompt(r){if(!USER||!r?.prompt)return;const {error}=await sb.from('prompts').insert({mode:r.mode,target:r.target,req:r.req,prompt:r.prompt});if(error)console.warn(error);}
-async function dbLoadChat(){if(!USER)return;const {data}=await sb.from('chat_messages').select('role,text').order('created_at',{ascending:true}).limit(200);if(data){S.chat=data;renderThread(false);if(S.mode==='chat')$('#chat').classList.toggle('hidden',!S.chat.length);}}
-async function dbAddChat(role,text){if(!USER||!text)return;await sb.from('chat_messages').insert({role,text});}
-async function dbClearChat(){if(!USER)return;await sb.from('chat_messages').delete().eq('user_id',USER.id);}
+/* 기록 저장: 로그인 시 DB(계정별), 비로그인 시 이 기기(localStorage) */
+async function dbSavePrompt(r){if(!r?.prompt)return;
+ if(USER){const {data,error}=await sb.from('prompts').insert({mode:r.mode,target:r.target,req:r.req,prompt:r.prompt}).select('id').single();if(!error&&data)r.id=data.id;}
+ else{r.id='p'+Date.now();const h=LS.get('phist',[]);h.unshift({id:r.id,mode:r.mode,target:r.target,req:r.req,prompt:r.prompt,at:new Date().toISOString()});LS.set('phist',h.slice(0,100));}
+ loadSide();}
+function dbLoadChat(){loadSide();}
+async function saveChatTurn(userText,aiText){const title=userText.replace(/\s+/g,' ').slice(0,40);
+ if(USER){if(!S.convId){const {data}=await sb.from('conversations').insert({title}).select('id').single();S.convId=data?.id;}
+  if(S.convId){await sb.from('chat_messages').insert([{role:'user',text:userText,conversation_id:S.convId},{role:'model',text:aiText,conversation_id:S.convId}]);await sb.from('conversations').update({updated_at:new Date().toISOString()}).eq('id',S.convId);}}
+ else{const cs=LS.get('convs',[]);let c=cs.find(x=>x.id===S.convId);if(!c){c={id:'c'+Date.now(),title,messages:[]};cs.unshift(c);S.convId=c.id;}c.messages=S.chat.filter(m=>m.text);c.at=new Date().toISOString();cs.sort((a,b)=>new Date(b.at)-new Date(a.at));LS.set('convs',cs.slice(0,50));}
+ loadSide();}
+/* ---------- 사이드바 기록 ---------- */
+const SIDE={items:[],all:false,q:''};
+async function loadSide(){let items=[];
+ if(USER&&sb){const [c,p]=await Promise.all([sb.from('conversations').select('id,title,updated_at').order('updated_at',{ascending:false}).limit(100),sb.from('prompts').select('id,mode,target,req,prompt,created_at').order('created_at',{ascending:false}).limit(100)]);
+  items=[...(c.data||[]).map(x=>({type:'chat',id:x.id,title:x.title,at:x.updated_at})),...(p.data||[]).map(x=>({type:'prompt',id:x.id,title:x.req,at:x.created_at,data:x}))];}
+ else items=[...LS.get('convs',[]).map(x=>({type:'chat',id:x.id,title:x.title,at:x.at,local:x})),...LS.get('phist',[]).map(x=>({type:'prompt',id:x.id,title:x.req,at:x.at,data:x,local:true}))];
+ items.sort((a,b)=>new Date(b.at)-new Date(a.at));SIDE.items=items;renderSide();}
+function dayGroup(d){const t=new Date();t.setHours(0,0,0,0);const x=new Date(d);const diff=(t-new Date(x.getFullYear(),x.getMonth(),x.getDate()))/864e5;return diff<=0?'오늘':diff<=1?'어제':diff<7?'지난 7일':diff<30?'지난 30일':'이전';}
+const ICON={chat:'💬',text:'✍️',image:'🎨',video:'🎬'};
+function renderSide(){const q=SIDE.q.trim().toLowerCase();let list=SIDE.items.filter(i=>!q||(i.title||'').toLowerCase().includes(q));const more=!SIDE.all&&!q&&list.length>15;if(more)list=list.slice(0,15);
+ let html='',g='';list.forEach((it,i)=>{const gg=dayGroup(it.at);if(gg!==g){g=gg;html+=`<div class="side-lbl">${gg}</div>`;}const on=(it.type==='chat'&&it.id===S.convId&&S.mode==='chat')||(it.type==='prompt'&&S.last?.id===it.id&&S.mode!=='chat');
+  html+=`<div class="sitem${on?' on':''}" data-i="${SIDE.items.indexOf(it)}" title="${esc(it.title||'')}"><span class="ic">${it.type==='chat'?ICON.chat:ICON[it.data?.mode]||ICON.text}</span><span class="t">${esc(it.title||'제목 없음')}</span><button class="del" data-del="1" title="삭제">✕</button></div>`;});
+ $('#sList').innerHTML=html||`<div class="side-empty">${q?'검색 결과가 없어요.':'아직 기록이 없어요.<br>무엇이든 검색해 보세요!'}</div>`;
+ $('#sMore').classList.toggle('hidden',!more);
+ $('#sFoot').innerHTML=USER?`<b style="color:var(--text)">${esc(uInfo(USER).name)}</b>님의 기록이 계정에 저장돼요.`:`지금은 이 기기에만 저장돼요.<br>로그인하면 어디서나 내 기록을 볼 수 있어요.<button class="loginbtn" id="sLogin">로그인 / 회원가입</button>`;
+ const sl=$('#sLogin');if(sl)sl.onclick=()=>{setAMode('login');authModal(true);};}
+const isWide=()=>innerWidth>=1100;
+const sideOpen=o=>{document.body.classList.toggle('side-open',o);LS.set('side',o);};
+$('#btnSide').onclick=()=>sideOpen(!document.body.classList.contains('side-open'));
+$('#sHide').onclick=()=>sideOpen(false);$('#sideScrim').onclick=()=>sideOpen(false);
+$('#sSearch').oninput=e=>{SIDE.q=e.target.value;renderSide();};
+$('#sMore').onclick=()=>{SIDE.all=true;renderSide();};
+function newChat(){S.chat=[];S.convId=null;S.mode='chat';renderUI();renderThread(false);$('#chat').classList.add('hidden');renderSide();q.focus();if(!isWide())sideOpen(false);}
+$('#sNew').onclick=newChat;
+$('#sList').onclick=async e=>{const el=e.target.closest('.sitem');if(!el)return;const it=SIDE.items[+el.dataset.i];if(!it)return;
+ if(e.target.dataset.del){if(!confirm('이 기록을 삭제할까요?'))return;
+  if(it.type==='chat'){if(USER)await sb.from('conversations').delete().eq('id',it.id);else LS.set('convs',LS.get('convs',[]).filter(x=>x.id!==it.id));if(S.convId===it.id){S.chat=[];S.convId=null;renderThread(false);$('#chat').classList.add('hidden');}}
+  else{if(USER)await sb.from('prompts').delete().eq('id',it.id);else LS.set('phist',LS.get('phist',[]).filter(x=>x.id!==it.id));}
+  toast('삭제했어요');return loadSide();}
+ if(it.type==='chat'){S.mode='chat';S.convId=it.id;
+  if(it.local)S.chat=(it.local.messages||[]).slice();else{const {data}=await sb.from('chat_messages').select('role,text').eq('conversation_id',it.id).order('created_at',{ascending:true});S.chat=data||[];}
+  renderUI();renderThread(false);$('#chat').classList.remove('hidden');}
+ else{const d=it.data;S.mode=d.mode||'text';renderUI();show({id:it.id,mode:d.mode||'text',target:d.target,req:d.req,prompt:d.prompt});}
+ renderSide();if(!isWide())sideOpen(false);scrollTo({top:0,behavior:'smooth'});};
 /* 가입한 회원만 로그인: 회원가입 탭에서 가입해야 registered=true */
 async function checkMember(){const u=USER;if(!u)return;let intent=null;try{intent=JSON.parse(localStorage.getItem('ps2_intent')||'null');localStorage.removeItem('ps2_intent');}catch{}
  if(intent&&Date.now()-intent.at>15*60*1000)intent=null;
  const {data:prof}=await sb.from('profiles').select('registered').eq('id',u.id).maybeSingle();
- if(prof?.registered){USER=u;renderAuth();dbLoadChat();if(intent)toast(intent.mode==='signup'?(intent.p==='email'?`회원가입 완료! ${uInfo(u).name}님, 환영해요 🎉`:'이미 가입된 계정이에요. 로그인했어요'):`${uInfo(u).name}님, 환영해요!`);return;}
- if(intent?.mode==='signup'){await sb.from('profiles').update({registered:true,agreed_at:new Date().toISOString()}).eq('id',u.id);USER=u;renderAuth();dbLoadChat();toast(`회원가입 완료! ${uInfo(u).name}님, 환영해요 🎉`);return;}
+ if(prof?.registered){USER=u;renderAuth();S.convId=null;loadSide();if(intent)toast(intent.mode==='signup'?(intent.p==='email'?`회원가입 완료! ${uInfo(u).name}님, 환영해요 🎉`:'이미 가입된 계정이에요. 로그인했어요'):`${uInfo(u).name}님, 환영해요!`);return;}
+ if(intent?.mode==='signup'){await sb.from('profiles').update({registered:true,agreed_at:new Date().toISOString()}).eq('id',u.id);USER=u;renderAuth();S.convId=null;loadSide();toast(`회원가입 완료! ${uInfo(u).name}님, 환영해요 🎉`);return;}
  USER=null;renderAuth();await sb.auth.signOut();setAMode('signup','아직 가입하지 않은 계정이에요. 약관 동의 후 회원가입을 먼저 해주세요.');authModal(true);}
 let lastUid=null;
-if(sb){sb.auth.onAuthStateChange((ev,session)=>{const u=session?.user||null;if(!u){USER=null;lastUid=null;renderAuth();return;}if(u.id===lastUid){USER=u;return;}lastUid=u.id;setTimeout(()=>{USER=u;checkMember();},0);});}
+if(sb){sb.auth.onAuthStateChange((ev,session)=>{const u=session?.user||null;if(!u){const was=!!lastUid;USER=null;lastUid=null;renderAuth();if(was){S.convId=null;loadSide();}return;}if(u.id===lastUid){USER=u;return;}lastUid=u.id;setTimeout(()=>{USER=u;checkMember();},0);});}
 {const ae=location.hash.match(/auth_error=([^&]+)/);if(ae){setTimeout(()=>toast('로그인 실패: '+decodeURIComponent(ae[1])),300);history.replaceState(null,'',location.pathname);}}
 
 /* ---------- BOOT ---------- */
-Object.assign(S.target,LS.get('target',{}));S.chat=LS.get('chat',[]).filter(m=>m.text);if(S.chat.length)renderThread(false);
+Object.assign(S.target,LS.get('target',{}));S.convId=null;
+sideOpen(isWide()?LS.get('side',true):false);loadSide();
 renderUI();autosize();
 (async()=>{const hs=location.hash.match(/#s=(.+)/);if(hs){try{const d=await unpack(hs[1]);const r={mode:d.m||'text',target:d.t||'general',req:d.r||'',prompt:d.p||''};S.mode=r.mode;renderUI();show(r);document.body.classList.add('viewing');$('#rTitle').textContent='🔗 공유된 프롬프트';document.title='공유된 프롬프트 · PromptStudio';}catch(e){toast('공유 링크를 열 수 없어요');}return;}
  const hm=location.hash.match(/#p=(.+)/);if(hm){try{const r=JSON.parse(decodeURIComponent(escape(atob(hm[1]))));S.mode=r.mode;renderUI();show(r);history.replaceState(null,'',location.pathname);}catch{}}})();
