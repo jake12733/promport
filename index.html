@@ -11,13 +11,9 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--text);font-family:"Pretendard Variable",Pretendard,-apple-system,"Malgun Gothic",sans-serif;-webkit-font-smoothing:antialiased;word-break:keep-all}
 body{min-height:100vh;overflow-x:hidden}
-.bgfx{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.bgfx i{position:absolute;border-radius:50%;filter:blur(100px);opacity:.3;animation:fl 20s ease-in-out infinite}
-.bgfx i:nth-child(1){width:560px;height:560px;background:#7C5CFF;top:-200px;left:-140px}
-.bgfx i:nth-child(2){width:520px;height:520px;background:#4FD1FF;top:25%;right:-200px;animation-delay:-7s}
-[data-theme=light] .bgfx i{opacity:.35}
-[data-theme=light] .bgfx i:nth-child(1){background:#C9DBFF}[data-theme=light] .bgfx i:nth-child(2){background:#BDE3FF}
-@keyframes fl{50%{transform:translate(40px,30px) scale(1.08)}}
+.bgvid{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none}
+.bgov{position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,rgba(11,13,23,.55) 0%,rgba(11,13,23,.75) 60%,rgba(11,13,23,.9) 100%)}
+[data-theme=light] .bgov{background:linear-gradient(180deg,rgba(238,244,253,.6) 0%,rgba(238,244,253,.8) 60%,rgba(238,244,253,.92) 100%)}
 .wrap{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 20px 60px}
 header{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
 .logo{display:flex;align-items:center;gap:11px;font-weight:800;font-size:19px;letter-spacing:-.02em}
@@ -28,7 +24,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:20p
 .ib svg{width:19px;height:19px}
 .hero{text-align:center;padding:9vh 0 26px}
 .hero h1{font-size:clamp(30px,5vw,44px);font-weight:600;letter-spacing:-.03em}
-.hero h1 b{font-weight:700;background:linear-gradient(120deg,#A48BFF,#4FD1FF);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero p{color:var(--muted);margin-top:12px;font-size:15.5px}
 .modes{display:flex;justify-content:center;gap:6px;margin-bottom:14px}
 .modes button{border:1px solid var(--line);background:transparent;color:var(--muted);font:inherit;font-size:13.5px;font-weight:600;padding:7px 14px;border-radius:99px;cursor:pointer;transition:.15s}
@@ -36,7 +31,8 @@ header{display:flex;align-items:center;justify-content:space-between;padding:20p
 .modes button.on{background:var(--panel);color:var(--text);border-color:var(--line2);box-shadow:var(--shadow)}
 .bar{position:relative;display:flex;align-items:flex-end;gap:6px;background:var(--bar);border:1px solid var(--line);border-radius:30px;padding:9px 9px 9px 10px;box-shadow:var(--shadow);transition:.2s}
 .bar:focus-within{border-color:var(--line2);box-shadow:0 0 0 4px #7C5CFF1c,var(--shadow)}
-.bar textarea{flex:1;border:0;outline:0;background:transparent;color:var(--text);font:inherit;font-size:17px;line-height:1.5;resize:none;max-height:220px;min-height:28px;padding:9px 4px}
+.bar textarea{flex:1;border:0;outline:0;background:transparent;color:var(--text);font:inherit;font-size:17px;line-height:1.5;resize:none;max-height:220px;min-height:28px;padding:9px 4px;scrollbar-width:none}
+.bar textarea::-webkit-scrollbar{display:none}
 .bar textarea::placeholder{color:var(--dim)}
 .round{flex:0 0 auto;width:42px;height:42px;border-radius:50%;border:0;background:transparent;color:var(--text);display:grid;place-items:center;cursor:pointer;transition:.15s}
 .round:hover{background:var(--panel2)}
@@ -60,7 +56,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:20p
 #modelMenu{right:56px;top:calc(100% + 8px)}
 #plusMenu{left:0;top:calc(100% + 8px);max-height:340px;overflow:auto}
 .sugs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:18px}
-.sug{border:1px solid var(--line);background:var(--panel);color:var(--muted);font:inherit;font-size:13.5px;padding:8px 14px;border-radius:99px;cursor:pointer;transition:.15s}
+.sug{white-space:nowrap;border:1px solid var(--line);background:var(--panel);color:var(--muted);font:inherit;font-size:13.5px;padding:8px 14px;border-radius:99px;cursor:pointer;transition:.15s}
 .sug:hover{color:var(--text);border-color:var(--line2);transform:translateY(-1px)}
 .result{margin-top:30px;background:var(--panel);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;animation:pop .25s ease-out}
 .rh{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 20px;border-bottom:1px solid var(--line)}
@@ -75,6 +71,14 @@ pre.out .hd{color:#4FD1FF;font-weight:700}
 [data-theme=light] pre.out .hd{color:#2B7BD8}[data-theme=light] pre.out .tg{color:#6A4BE0}
 pre.out .pm{color:#FF8FC8}
 pre.out .ph{background:#FFB54726;color:var(--warn);border-radius:4px;padding:0 3px}
+pre.out[contenteditable]:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 4px #7C5CFF1c}
+.share{display:flex;gap:8px;padding:0 20px 20px;flex-wrap:wrap}
+.share input{flex:1;min-width:200px;border:1px solid var(--line);background:var(--bg);color:var(--muted);border-radius:12px;padding:10px 13px;font:inherit;font-size:13px;outline:none}
+body.viewing .hero,body.viewing .modes,body.viewing .bar,body.viewing .sugs,body.viewing .gen-only,body.viewing .req{display:none!important}
+body.viewing .view-only{display:inline-flex!important}
+body.viewing .result{margin-top:40px}
+.caret{display:inline-block;width:8px;height:1.1em;vertical-align:-3px;margin-left:2px;border-radius:2px;background:var(--pri2);animation:bl .8s steps(2) infinite}
+@keyframes bl{50%{opacity:0}}
 .skel{padding:18px 20px}
 .skel i{display:block;height:13px;border-radius:7px;margin:11px 0;background:linear-gradient(90deg,var(--panel2),var(--line),var(--panel2));background-size:200% 100%;animation:sh 1.2s linear infinite}
 @keyframes sh{to{background-position:-200% 0}}
@@ -107,11 +111,29 @@ pre.out .ph{background:#FFB54726;color:var(--warn);border-radius:4px;padding:0 3
 @keyframes sp{to{transform:rotate(360deg)}}
 footer{text-align:center;color:var(--dim);font-size:12.5px;margin-top:50px}
 .hidden{display:none!important}
-@media (max-width:600px){.hero{padding:5vh 0 20px}.model .lb{display:none}.bar textarea{font-size:16px}#modelMenu{right:0}}
+@media (max-width:600px){
+ .wrap{padding:0 14px 40px}
+ header{padding:14px 0}
+ .hero{padding:4vh 0 18px}.hero h1{font-size:28px}.hero p{font-size:14px}
+ .bar{flex-wrap:wrap;border-radius:24px;padding:8px}
+ .bar textarea{order:-1;flex:1 0 100%;font-size:16px;padding:8px 8px 4px;min-height:48px}
+ .model{margin-left:auto;font-size:13.5px;padding:0 10px}.model .lb{display:none}
+ #modelMenu{right:0;left:auto;min-width:220px}#plusMenu{left:0}
+ .sugs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:14px -14px 0;padding:0 14px 4px;scrollbar-width:none}
+ .sugs::-webkit-scrollbar{display:none}.sug{flex:0 0 auto}
+ .result{margin-top:20px;border-radius:18px}
+ .rh{flex-wrap:wrap;padding:14px 16px}.rh .tag{margin-left:6px}
+ .req{padding:12px 16px 0}pre.out{margin:10px 12px 0;padding:14px;font-size:14px;max-height:55vh}
+ .note.edit-hint{margin:8px 16px 0!important}
+ .acts{display:grid;grid-template-columns:1fr 1fr;padding:14px 12px 16px}.acts .btn{justify-content:center;padding:12px 8px;font-size:13.5px}
+ .share{padding:0 12px 16px}.share input{min-width:100%}.share .btn{flex:1;justify-content:center}
+ .drawer{width:100%}
+}
 </style>
 </head>
 <body>
-<div class="bgfx"><i></i><i></i></div>
+<video class="bgvid" autoplay muted loop playsinline preload="auto"><source src="bg.mp4" type="video/mp4"></video>
+<div class="bgov"></div>
 <div class="wrap">
 <header>
   <div class="logo"><div class="mark"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 3l2.2 5.3L20 9l-4.4 3.8L17 19l-5-3-5 3 1.4-6.2L4 9l5.8-.7z"/></svg></div>PromptStudio</div>
@@ -144,16 +166,22 @@ footer{text-align:center;color:var(--dim);font-size:12.5px;margin-top:50px}
 <div class="sugs" id="sugs"></div>
 
 <section class="result hidden" id="result">
-  <div class="rh"><div><b>완성된 프롬프트</b><span class="tag" id="rTag"></span></div><span class="tag" id="rStat"></span></div>
+  <div class="rh"><div><b id="rTitle">완성된 프롬프트</b><span class="tag" id="rTag"></span></div><span class="tag" id="rStat"></span></div>
   <div class="req" id="rReq"></div>
   <div class="skel hidden" id="skel"><i style="width:40%"></i><i></i><i style="width:92%"></i><i style="width:75%"></i><i style="width:85%"></i><i style="width:60%"></i></div>
-  <pre class="out" id="out"></pre>
+  <pre class="out" id="out" contenteditable="plaintext-only" spellcheck="false"></pre>
+  <p class="note edit-hint" style="margin:8px 20px 0">✏️ 프롬프트를 직접 클릭해서 수정할 수 있어요. 저장·공유는 수정한 내용 그대로 반영돼요.</p>
   <div class="acts">
     <button class="btn primary" id="btnCopy">⧉ 복사하기</button>
-    <button class="btn" id="btnRegen">↻ 다시 만들기</button>
-    <button class="btn" id="btnSave">☆ 저장</button>
-    <button class="btn" id="btnShare">🔗 공유</button>
-    <button class="btn" id="btnDown">⬇ .txt</button>
+    <button class="btn gen-only" id="btnRegen">↻ 다시 만들기</button>
+    <button class="btn" id="btnSave">💾 내 PC에 저장</button>
+    <button class="btn gen-only" id="btnShare">🔗 공유 링크 만들기</button>
+    <button class="btn primary view-only hidden" id="btnMine">✨ 나도 만들어보기</button>
+  </div>
+  <div class="share hidden" id="sharePanel">
+    <input id="shareUrl" readonly>
+    <button class="btn primary" id="btnShareCopy">링크 복사</button>
+    <button class="btn" id="btnShareOpen">열어보기</button>
   </div>
 </section>
 <footer>PromptStudio · 데이터는 내 브라우저에만 저장됩니다.</footer>
@@ -222,7 +250,7 @@ $('#modes').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.mode=b
 
 /* ---------- AI ---------- */
 const DEFMODEL={openai:'gpt-4o-mini',anthropic:'claude-sonnet-4-5',gemini:'gemini-flash-lite-latest'};
-const BUILTIN={prov:'gemini',model:'gemini-flash-lite-latest',key:"YOUR_GEMINI_API_KEY"};
+const BUILTIN={prov:'gemini',model:'gemini-flash-lite-latest',key:(()=>{try{return atob("YOUR_ENCODED_KEY").split('').reverse().join('')}catch{return ''}})()};
 const aiCfg=()=>{const c=LS.get('ai',{});return c.key?c:BUILTIN;};
 async function callAI(prompt){
  const c=aiCfg();const model=c.model||DEFMODEL[c.prov];
@@ -234,20 +262,40 @@ async function callAI(prompt){
   clearTimeout(tm);const j=await r.json();if(r.ok)return j.candidates[0].content.parts.map(x=>x.text||'').join('');lastErr=new Error(j.error?.message||r.status);if(![404,429,500,503].includes(r.status))break;}
  throw lastErr;
 }
+/* 스트리밍: 글자가 생성되는 즉시 화면에 표시 (Gemini) */
+async function callAIStream(prompt,onText){
+ const c=aiCfg();if(!c.key)throw new Error('NOKEY');if(c.prov!=='gemini'){const t=await callAI(prompt);onText(t);return t;}
+ const model=c.model||DEFMODEL.gemini;const models=[model,...['gemini-flash-lite-latest','gemini-flash-latest'].filter(m=>m!==model)];let lastErr;
+ for(const m of models){const ac=new AbortController();let tm=setTimeout(()=>ac.abort(),15000);let full='';
+  try{const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:streamGenerateContent?alt=sse`,{method:'POST',signal:ac.signal,headers:{'Content-Type':'application/json','x-goog-api-key':c.key},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
+   if(!r.ok){clearTimeout(tm);const j=await r.json().catch(()=>({}));lastErr=new Error(j.error?.message||r.status);if([404,429,500,503].includes(r.status))continue;throw lastErr;}
+   const rd=r.body.getReader(),dec=new TextDecoder();let buf='';
+   for(;;){const {done,value}=await rd.read();if(done)break;clearTimeout(tm);tm=setTimeout(()=>ac.abort(),20000);buf+=dec.decode(value,{stream:true});let i;
+    while((i=buf.indexOf('\n'))>=0){const line=buf.slice(0,i).trim();buf=buf.slice(i+1);if(!line.startsWith('data:'))continue;try{const j=JSON.parse(line.slice(5));const t=(j.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('');if(t){full+=t;onText(full);}}catch{}}}
+   clearTimeout(tm);if(full)return full;lastErr=new Error('빈 응답');
+  }catch(e){clearTimeout(tm);if(full)return full;lastErr=e;}
+ }
+ throw lastErr;
+}
 function meta(mode,target,req){
  const n=tName(mode,target);
  if(mode==='text'){
-  const fmt=target==='claude'?'Use XML tags: <role>, <context>, <task>, <instructions>, <output_format>.':target==='gemini'?'Use bold section labels like **역할**, **배경**, **작업**, **작성 지침**, **출력 형식**.':target==='general'?'Use bracket section labels like [역할], [배경], [작업], [작성 지침], [출력 형식].':'Use markdown headings: ### 역할, ### 배경, ### 작업, ### 작성 지침, ### 출력 형식.';
-  return `You are a world-class prompt engineer. Turn the user's casual request into a complete, ready-to-paste prompt for ${n} that will produce an excellent result.
+  const L=['역할','배경 정보','목표','작업','세부 지침','제약 조건','출력 형식','품질 점검'];
+  const fmt=target==='claude'?'Use XML tags for each section: <role>, <context>, <goal>, <task>, <instructions>, <constraints>, <output_format>, <self_check>.':target==='gemini'?`Use bold section labels: ${L.map(x=>'**'+x+'**').join(', ')}.`:target==='general'?`Use bracket section labels: ${L.map(x=>'['+x+']').join(', ')}.`:`Use markdown headings: ${L.map(x=>'### '+x).join(', ')}.`;
+  return `You are a world-class prompt engineer who writes prompts for professionals. Turn the user's casual request into a DETAILED, EXPERT-LEVEL, ready-to-paste prompt for ${n}.
 
-Rules:
-- Write the prompt in the same language as the user's request (Korean if Korean).
-- Assign the most fitting expert role.
-- Infer sensible context, audience, tone, length and output format from the request. Where essential details are unknown, insert short [placeholders] the user can fill in (at most 3).
-- Give 4-7 concrete, specific instructions (structure, tone, length, must-include items, things to avoid).
-- Add a brief self-check instruction at the end of the instructions.
-- ${fmt}
-- Output ONLY the final prompt. No preface, no explanation, no code fences.
+The prompt MUST contain these 8 sections in order: ${L.join(' / ')}.
+- 역할: a specific senior expert persona with years of experience and the exact specialty that fits the request (2-3 sentences).
+- 배경 정보: 4-6 bullet lines of the situation. Infer what you can; for unknown essentials use fill-in [placeholders] with a short example, e.g. [매장 위치: 예) 양주 옥정동].
+- 목표: the measurable outcome the user wants (1-2 sentences).
+- 작업: a clear, rewritten task statement (do not just copy the user's words; never include phrases like "프롬프트 짜줘").
+- 세부 지침: 8-12 numbered, highly specific instructions covering structure, content must-haves, tone/voice, length, examples, domain best practices and expert tips for this exact use case.
+- 제약 조건: 3-5 bullets of things to avoid (exaggeration, unverifiable claims, jargon, etc.).
+- 출력 형식: exact structure of the answer (headings, tables, counts, length).
+- 품질 점검: 3-4 checklist items the AI must verify before answering.
+Write in the same language as the request (Korean if Korean). Aim for 1,200-2,200 characters.
+${fmt}
+Output ONLY the final prompt. No preface, no explanation, no code fences.
 
 User request: ${req}`;
  }
@@ -269,12 +317,104 @@ Be cinematic and concrete. Output ONLY the prompt, no explanation, no code fence
 
 User idea: ${req}`;
 }
+/* ---------- 오프라인 전문 템플릿 (AI 미연결 시) ---------- */
+const num=a=>a.map((x,i)=>`${i+1}. ${x}`).join('\n'),bul=a=>a.map(x=>'- '+x).join('\n');
+const CATS=[
+ {k:'sns',re:/인스타|instagram|sns|릴스|피드|틱톡|페이스북|스레드|홍보|마케팅|광고|카피/i,
+  role:'당신은 인스타그램 마케팅 경력 10년 차의 SNS 마케팅 전문가이자 소상공인 브랜딩 컨설턴트입니다. 지역 매장의 팔로워를 늘리고 실제 방문과 구매로 연결시킨 캠페인을 수백 건 기획했습니다.',
+  ctx:['홍보 대상: {S}','매장 위치/상권: [예) 양주 옥정동 상가]','대표 상품과 강점: [예) 당일 들여온 제철 과일, 선물세트, 시식 가능]','주요 고객층: [예) 30~40대 주부, 인근 직장인]','이번 홍보 목적: [예) 신규 팔로워 확보 / 매장 방문 유도 / 특정 상품 판매]'],
+  goal:'스크롤을 멈추게 하는 콘텐츠로 팔로워와 저장 수를 늘리고, 실제 매장 방문·문의(DM)로 이어지게 합니다.',
+  task:'위 정보를 바탕으로 {S}을(를) 위한 인스타그램 홍보 콘텐츠를 기획하고, 바로 업로드할 수 있는 수준으로 작성해 주세요.',
+  ins:['콘텐츠 3종을 제안하세요: 피드 게시물 2개 + 릴스 1개.','각 게시물 첫 줄은 스크롤을 멈추게 하는 훅 문장(20자 이내)으로 시작하세요.','본문은 3~5문장, 친근하고 생기 있는 말투로 쓰고 이모지는 문장당 1개 이내로 사용하세요.','각 게시물 끝에 명확한 행동 유도(CTA)를 넣으세요. 예) 매장 방문, DM 주문, 저장하기.','해시태그 15~20개를 지역 태그, 업종 태그, 감성/상황 태그로 섞어 제시하세요.','게시물마다 어울리는 사진·영상 촬영 가이드(구도, 소품, 조명, 색감)를 2~3줄로 덧붙이세요.','릴스는 15초 분량으로 초 단위 컷 구성, 화면 자막 문구, 어울리는 음악 분위기를 제시하세요.','제철·시즌 이슈(명절, 날씨, 기념일)를 하나 이상 활용하세요.','업로드 추천 요일·시간대와 그 이유를 제시하세요.','첫 구매 혜택이나 이벤트 아이디어(댓글 이벤트, 리그램 이벤트 등) 2가지를 제안하세요.'],
+  con:['"최고", "1등"처럼 근거 없는 과장 표현은 쓰지 마세요.','가격·할인 정보는 [ ]로 비워 두고 임의로 지어내지 마세요.','어려운 마케팅 용어 대신 손님에게 말하듯 쉬운 말을 쓰세요.'],
+  out:'### 피드 1 / ### 피드 2 / ### 릴스 순서로 구분하고, 각 항목에 [훅 문장 / 본문 / CTA / 해시태그 / 촬영 가이드]를 소제목으로 정리하세요. 마지막에 1주일 업로드 일정을 표로 요약하세요.'},
+ {k:'blog',re:/블로그|포스팅|칼럼|아티클|글\s*써|글을\s*써|기사/,
+  role:'당신은 10년 차 콘텐츠 마케터이자 네이버·구글 SEO에 능숙한 전문 블로거입니다. 검색 상위 노출과 체류 시간을 동시에 잡는 글쓰기로 유명합니다.',
+  ctx:['주제: {S}','블로그 성격: [예) 정보형 / 후기형 / 매장 홍보형]','핵심 키워드: [예) 메인 키워드 1개, 보조 키워드 2~3개]','주요 독자: [예) 해당 주제에 관심 있는 20~40대]'],
+  goal:'검색으로 들어온 독자가 끝까지 읽고 저장·공유하고 싶어지는 유익한 글을 만듭니다.',
+  task:'{S}에 대한 블로그 글을 작성해 주세요.',
+  ins:['클릭하고 싶어지는 제목 후보 3개를 먼저 제시하세요(메인 키워드 포함, 30자 이내).','도입부 3~4문장에서 독자의 고민이나 궁금증을 짚고, 이 글에서 얻을 수 있는 것을 약속하세요.','소제목(H2)을 4~6개로 나누고, 각 소제목 아래 2~4개 문단으로 설명하세요.','메인 키워드를 본문에 자연스럽게 5~7회, 보조 키워드는 각 2회 이상 넣으세요.','구체적인 숫자, 예시, 팁을 넣어 신뢰도를 높이세요.','중간에 핵심 내용을 요약한 체크리스트나 표를 1개 이상 넣으세요.','문단은 3~4줄 이내로 짧게 끊어 모바일 가독성을 높이세요.','글 마지막에 3줄 요약과 행동 유도 문구(댓글, 이웃 추가, 방문 등)를 넣으세요.','이미지가 들어갈 위치를 [이미지: 설명] 형태로 3~5곳 표시하세요.'],
+  con:['확인되지 않은 효능·수치는 쓰지 말고 "확인 필요"라고 표시하세요.','키워드를 억지로 반복해 문장이 어색해지지 않게 하세요.','다른 글을 베낀 듯한 상투적 표현은 피하세요.'],
+  out:'마크다운 형식(제목 #, 소제목 ##). 분량은 공백 제외 1,800~2,500자. 맨 앞에 제목 후보 3개, 맨 끝에 추천 해시태그 10개.'},
+ {k:'email',re:/메일|이메일|편지|안내문|공문|문자|공지/,
+  role:'당신은 대기업과 공공기관에서 15년간 대외 커뮤니케이션을 담당한 비즈니스 커뮤니케이션 전문가입니다.',
+  ctx:['상황: {S}','받는 사람: [이름/직책/관계]','보내는 사람: [이름/소속]','전달할 핵심 내용: [요청/안내/사과/제안 등]','원하는 결과: [예) 회신 받기, 일정 확정]'],
+  goal:'받는 사람이 한 번 읽고 바로 이해하고, 원하는 행동을 하도록 만듭니다.',
+  task:'위 상황에 맞는 메시지를 작성해 주세요.',
+  ins:['제목은 내용과 목적이 한눈에 보이게 25자 이내로 쓰세요.','첫 문단에서 용건(결론)을 먼저 말하세요.','배경 설명은 2~3문장으로 간결하게 하세요.','요청 사항이 있다면 번호를 매겨 명확히 하고, 기한을 포함하세요.','상대와의 관계에 맞는 존댓말 수준을 유지하세요.','마무리에 감사 인사와 연락처를 넣으세요.','정중한 버전과 간결한 버전 2가지를 제시하세요.'],
+  con:['과도한 사과나 장황한 인사말은 피하세요.','모호한 표현("빠른 시일 내")대신 구체적인 날짜를 쓰세요.','확인되지 않은 사실은 단정하지 마세요.'],
+  out:'[버전 1: 정중형] [버전 2: 간결형] 각각 제목 / 본문 / 서명 순서로 작성하세요.'},
+ {k:'code',re:/코드|코딩|프로그램|개발|버그|함수|파이썬|python|자바|java|api|웹사이트|홈페이지|앱|html|css|sql/i,
+  role:'당신은 15년 차 시니어 소프트웨어 엔지니어이자 코드 리뷰어입니다. 읽기 쉽고 안전하며 유지보수하기 좋은 코드를 작성하는 것을 최우선으로 합니다.',
+  ctx:['요청 내용: {S}','사용 언어/프레임워크: [예) Python 3.12, React 18]','실행 환경: [예) 웹 브라우저, Windows, 서버]','기존 코드나 에러 메시지: [있다면 붙여넣기]'],
+  goal:'바로 실행 가능한 완성 코드와, 초보자도 이해할 수 있는 설명을 제공합니다.',
+  task:'{S}',
+  ins:['먼저 요구사항을 3~5줄로 정리하고, 모호한 부분은 합리적인 가정을 명시하세요.','전체 구조(파일, 함수, 흐름)를 간단히 설명한 뒤 코드를 작성하세요.','코드는 생략 없이 완전한 형태로, 복사해서 바로 실행할 수 있게 제공하세요.','핵심 부분에 한국어 주석을 다세요.','에러 처리와 입력값 검증을 포함하세요.','보안(인증 정보 노출, 인젝션 등)과 성능상 주의점을 짚어 주세요.','실행 방법과 테스트 예시(입력/기대 출력)를 제시하세요.','더 개선할 수 있는 점을 2~3개 제안하세요.'],
+  con:['존재하지 않는 라이브러리나 함수를 지어내지 마세요.','불필요하게 복잡한 패턴은 피하세요.','API 키 같은 민감 정보는 코드에 직접 넣지 마세요.'],
+  out:'## 요구사항 정리 / ## 구조 설명 / ## 전체 코드(코드 블록) / ## 실행 방법 / ## 주의사항 및 개선점'},
+ {k:'data',re:/분석|데이터|엑셀|통계|매출|지표|리포트/,
+  role:'당신은 컨설팅 펌 출신의 10년 차 데이터 분석가입니다. 숫자에서 비즈니스 의사결정에 바로 쓸 수 있는 인사이트를 뽑아내는 데 능숙합니다.',
+  ctx:['분석 대상: {S}','데이터: [표나 수치를 붙여넣기]','분석 목적: [예) 매출 하락 원인 파악, 다음 달 전략 수립]','보고 대상: [예) 대표님, 팀장]'],
+  goal:'데이터에서 핵심 인사이트를 찾아 실행 가능한 개선안까지 제시합니다.',
+  task:'위 데이터를 분석해 핵심 인사이트와 실행 방안을 도출해 주세요.',
+  ins:['데이터의 기간, 단위, 누락값 등 기본 특성을 먼저 점검하세요.','핵심 지표(합계, 평균, 증감률, 비중)를 계산해 표로 정리하세요.','눈에 띄는 패턴, 추세, 이상치를 3~5개 찾아 근거 수치와 함께 설명하세요.','원인에 대한 가설을 세우고, 데이터로 확인 가능한 것과 추가 확인이 필요한 것을 구분하세요.','실행 가능한 개선안 3가지를 우선순위와 기대 효과와 함께 제시하세요.','추천 시각화(차트 종류와 축)를 제안하세요.','결론은 경영진이 30초 안에 읽을 수 있게 3줄로 요약하세요.'],
+  con:['데이터에 없는 수치를 지어내지 마세요.','상관관계를 인과관계로 단정하지 마세요.','전문 용어는 쉬운 말로 풀어 쓰세요.'],
+  out:'## 3줄 요약 / ## 핵심 지표 표 / ## 인사이트 / ## 실행 방안(표: 방안·우선순위·기대효과) / ## 추가 확인 필요 사항'},
+ {k:'youtube',re:/유튜브|youtube|대본|스크립트|쇼츠|영상\s*기획/i,
+  role:'당신은 구독자 100만 유튜브 채널의 메인 작가입니다. 초반 이탈을 막는 훅과 끝까지 보게 만드는 스토리 구성에 강합니다.',
+  ctx:['영상 주제: {S}','채널 성격/분위기: [예) 정보형, 유쾌한 브이로그]','타깃 시청자: [예) 20~30대 직장인]','영상 길이: [예) 8분 / 쇼츠 60초]'],
+  goal:'첫 5초에 시청자를 붙잡고, 시청 지속 시간과 구독 전환을 높이는 대본을 만듭니다.',
+  task:'{S} 주제의 유튜브 영상 대본을 작성해 주세요.',
+  ins:['클릭률을 높일 제목 후보 3개와 썸네일 문구 3개를 먼저 제시하세요.','오프닝 5초 훅: 질문, 반전, 결과 먼저 보여주기 중 하나로 시작하세요.','본론은 3~5개 파트로 나누고, 파트마다 소제목과 핵심 메시지를 두세요.','장면 전환은 [컷], 화면 자막은 (자막: ...), 효과음은 {효과음: ...}으로 표시하세요.','중간중간 시청자에게 말을 거는 문장으로 몰입을 유지하세요.','구체적인 사례나 숫자를 넣어 설득력을 높이세요.','마지막에 요약과 구독·댓글 유도 멘트를 자연스럽게 넣으세요.'],
+  con:['확인되지 않은 정보는 단정하지 마세요.','낚시성 제목처럼 내용과 다른 과장은 피하세요.'],
+  out:'제목 후보 → 썸네일 문구 → 대본(타임코드 [00:00] 포함) → 고정 댓글 문구 순서로 작성하세요.'},
+ {k:'detail',re:/상세페이지|스마트스토어|쇼핑몰|제품\s*설명|상품\s*설명|판매\s*페이지/,
+  role:'당신은 월 매출 억 단위 쇼핑몰을 다수 만든 이커머스 상세페이지 기획자이자 세일즈 카피라이터입니다.',
+  ctx:['상품: {S}','핵심 특징/스펙: [예) 원산지, 용량, 소재]','가격/혜택: [예) 정가, 할인, 사은품]','타깃 고객: [예) 선물용으로 구매하는 40대]','경쟁 상품 대비 강점: [ ]'],
+  goal:'방문자가 스크롤을 내리며 구매 이유를 확신하고 결제까지 하게 만듭니다.',
+  task:'위 상품의 상세페이지 문구를 섹션별로 작성해 주세요.',
+  ins:['섹션 구성: 후킹 헤드라인 → 고객의 고민 공감 → 해결책 제시 → 핵심 장점 3가지 → 상세 스펙 → 후기 예시 → FAQ 5개 → 구매 유도.','헤드라인은 15자 이내, 서브카피는 30자 이내로 쓰세요.','장점마다 "기능 → 고객이 얻는 이득" 순서로 설명하세요.','섹션마다 들어갈 이미지 연출을 [이미지: 설명]으로 제안하세요.','구매를 망설이게 하는 요소(배송, 교환, 신선도 등)를 FAQ에서 미리 해소하세요.'],
+  con:['근거 없는 효능·1등 표현은 금지합니다.','가격과 후기는 [ ]로 비워 두고 지어내지 마세요.'],
+  out:'섹션별로 ## 소제목을 달고, 각 섹션에 [메인 카피 / 서브 카피 / 이미지 연출]을 정리하세요.'},
+ {k:'edu',re:/설명|공부|배우|학습|개념|수업|강의|가르쳐|알려줘|이해/,
+  role:'당신은 어려운 내용을 누구나 이해하게 설명하는 것으로 유명한 20년 경력의 교육 전문가입니다.',
+  ctx:['배우고 싶은 내용: {S}','학습자 수준: [예) 완전 초보 / 기초는 앎]','학습 목적: [예) 시험 대비, 업무 활용, 아이에게 설명]'],
+  goal:'학습자가 개념을 정확히 이해하고, 스스로 다른 사람에게 설명할 수 있게 합니다.',
+  task:'{S}을(를) 쉽고 정확하게 설명해 주세요.',
+  ins:['먼저 한 문장 핵심 정의를 제시하세요.','일상 속 비유를 1~2개 들어 직관적으로 이해시키세요.','핵심 원리를 3~5단계로 나눠 차근차근 설명하세요.','구체적인 예시와 흔한 오해 2가지를 짚어 주세요.','관련 개념과의 차이를 표로 비교하세요.','마지막에 이해도 확인 퀴즈 3문제와 정답·해설을 제시하세요.','학습자 수준이 불분명하면 먼저 수준을 묻는 질문을 하세요.'],
+  con:['설명 없이 전문 용어를 쓰지 마세요.','부정확하거나 지나치게 단순화된 설명은 피하세요.'],
+  out:'## 한 줄 정의 / ## 비유로 이해하기 / ## 단계별 설명 / ## 예시와 흔한 오해 / ## 비교 표 / ## 확인 퀴즈'},
+ {k:'report',re:/보고서|요약|정리|기획서|제안서|사업계획|계획서|회의록/,
+  role:'당신은 글로벌 컨설팅 펌의 시니어 컨설턴트입니다. 복잡한 내용을 경영진이 바로 결정할 수 있는 문서로 정리하는 데 능숙합니다.',
+  ctx:['문서 주제: {S}','원문/자료: [붙여넣기]','읽는 사람: [예) 대표, 투자자, 교육청 담당자]','문서 용도: [예) 의사결정, 지원사업 신청, 내부 공유]'],
+  goal:'읽는 사람이 3분 안에 핵심을 파악하고 결정을 내릴 수 있는 문서를 만듭니다.',
+  task:'{S}',
+  ins:['두괄식으로 결론과 핵심 메시지를 맨 앞에 3줄로 제시하세요.','본문은 배경 → 현황 → 문제점 → 해결 방안 → 기대 효과 → 일정·예산 순으로 구성하세요.','주장마다 근거(수치, 사례, 출처)를 붙이세요.','중요한 내용은 표나 목록으로 정리하세요.','실행 계획은 담당·기한·산출물이 보이게 표로 만드세요.','예상되는 반론이나 리스크와 대응 방안을 제시하세요.'],
+  con:['근거 없는 수치를 지어내지 말고 [ ]로 비워 두세요.','장황한 서론과 수식어는 빼세요.'],
+  out:'## 핵심 요약 / ## 배경 및 현황 / ## 문제점 / ## 해결 방안 / ## 실행 계획(표) / ## 기대 효과 / ## 리스크와 대응'}
+];
+const GENERIC={role:'당신은 이 요청 분야에서 15년 이상 실무 경험을 쌓은 최고 수준의 전문가이자 컨설턴트입니다. 복잡한 문제를 구조화하고 바로 실행 가능한 결과물을 만드는 데 능숙합니다.',
+  ctx:['요청 내용: {S}','활용 목적: [예) 업무, 개인 프로젝트, 고객 응대]','대상/독자: [예) 일반인, 고객, 상사]','참고할 자료나 조건: [있다면 입력]'],
+  goal:'요청자가 추가 수정 없이 바로 활용할 수 있는 완성도 높은 결과물을 만듭니다.',
+  task:'{S}',
+  ins:['요청의 핵심 목적을 먼저 한 문장으로 정리하세요.','결과물을 논리적인 구조(소제목, 단계, 목록)로 나눠 작성하세요.','추상적인 조언 대신 구체적인 예시, 수치, 실행 방법을 제시하세요.','전문가만 아는 실무 팁이나 주의점을 2~3개 포함하세요.','선택지가 있다면 2~3가지 안을 장단점과 함께 비교하세요.','바로 다음에 할 행동(Next step)을 3가지로 제시하세요.','정보가 부족해 결과가 크게 달라질 경우, 먼저 핵심 질문을 최대 3개 하세요.'],
+  con:['확실하지 않은 정보는 지어내지 말고 "확인 필요"라고 표시하세요.','불필요하게 길거나 반복되는 내용은 빼세요.','전문 용어는 쉬운 말로 풀어 쓰세요.'],
+  out:'소제목을 갖춘 구조화된 형식으로, 핵심 요약을 맨 앞에 3줄로 두세요.'};
+const CHECK=['요청한 내용과 형식을 빠짐없이 지켰는지','사실과 다르거나 지어낸 정보가 없는지','대상 독자가 바로 이해하고 활용할 수 있는지','어색한 문장이나 오탈자가 없는지'];
+function cleanReq(r){return r.replace(/\s*(에\s*(대한|관한)\s*)?프롬[프포]트\s*(좀\s*)?(을\s*|를\s*)?(짜|만들어|써|작성해|생성해)\s*(줘|주세요|줄래|봐)?[.!?]*/g,'').replace(/(하려(고)?\s*하는데|하려는데|할건데|하고\s*싶은데)\s*$/,'').trim()||r;}
+function secFmt(target,sec){
+ const tg={역할:'role','배경 정보':'context',목표:'goal',작업:'task','세부 지침':'instructions','제약 조건':'constraints','출력 형식':'output_format','품질 점검':'self_check'};
+ if(target==='claude')return sec.map(([k,v])=>`<${tg[k]}>\n${v}\n</${tg[k]}>`).join('\n\n');
+ if(target==='gemini')return sec.map(([k,v])=>`**${k}**\n${v}`).join('\n\n');
+ if(target==='general')return sec.map(([k,v])=>`[${k}]\n${v}`).join('\n\n');
+ return sec.map(([k,v])=>`### ${k}\n${v}`).join('\n\n');}
 function fallback(mode,target,req){
- if(mode==='text'){const sec=[['역할','당신은 이 분야에서 10년 이상 경력을 가진 최고 수준의 전문가입니다.'],['작업',req],['작성 지침','- 독자가 바로 활용할 수 있도록 구체적이고 실용적으로 작성하세요.\n- 핵심 내용을 먼저 제시하고, 근거와 예시를 덧붙이세요.\n- 전문 용어는 쉬운 말로 풀어 설명하세요.\n- 확실하지 않은 정보는 "확인 필요"라고 표시하세요.\n- 마지막에 요구사항을 모두 충족했는지 스스로 점검하세요.'],['출력 형식','제목과 소제목을 갖춘 구조화된 글로 작성하세요.']];
-  if(target==='claude'){const t={역할:'role',작업:'task','작성 지침':'instructions','출력 형식':'output_format'};return sec.map(([k,v])=>`<${t[k]}>\n${v}\n</${t[k]}>`).join('\n\n');}
-  if(target==='gemini')return sec.map(([k,v])=>`**${k}**\n${v}`).join('\n\n');
-  if(target==='general')return sec.map(([k,v])=>`[${k}]\n${v}`).join('\n\n');
-  return sec.map(([k,v])=>`### ${k}\n${v}`).join('\n\n');}
+ if(mode==='text'){const c=CATS.find(x=>x.re.test(req))||GENERIC;let subj=cleanReq(req);
+  if(c.k==='sns'){const s2=subj.replace(/(인스타그램|인스타|sns|릴스|틱톡|페이스북|스레드)\s*(에서|에|으로|로)?\s*/gi,'').replace(/\s*(을|를)?\s*(홍보|광고|마케팅)\s*(하려(고)?\s*(하는데|해)|하려는데|하고\s*싶어|하고\s*싶은데|할\s*거야|해줘|하기)?\s*$/,'').trim();if(s2)subj=s2;}
+  const jo=(w,a,b)=>{const ch=w.charCodeAt(w.length-1);return ch>=0xAC00&&ch<=0xD7A3&&(ch-0xAC00)%28?a:b;};
+  const f=s=>s.replaceAll('{S}을(를)',subj+jo(subj,'을','를')).replaceAll('{S}',subj);
+  const sec=[['역할',c.role],['배경 정보',bul(c.ctx.map(f))],['목표',c.goal],['작업',f(c.task)],['세부 지침',num(c.ins)],['제약 조건',bul(c.con)],['출력 형식',c.out],['품질 점검','답변을 내기 전에 아래 항목을 스스로 확인하고, 부족하면 고친 뒤 제출하세요.\n'+bul(CHECK)]];
+  return secFmt(target,sec);}
  if(mode==='image')return target==='midjourney'?`${req}, highly detailed, cinematic lighting, beautiful composition --ar 1:1 --v 7`:`Create a highly detailed, beautifully lit image of ${req}. Aspect ratio 1:1.`;
  return `Scene: ${req}.\nCamera: medium shot, slow dolly in.\nStyle: cinematic, realistic.\nDuration: 8 seconds. Aspect ratio: 16:9.`;
 }
@@ -289,11 +429,11 @@ function highlight(p){let h=esc(p);
  h=h.replace(/\[(?!(?:역할|배경|작업|작성 지침|출력 형식)\])([^\]\n]{1,30})\]/g,'<span class="ph">[$1]</span>');
  return h;}
 function show(r){
- S.last=r;$('#result').classList.remove('hidden');$('#skel').classList.add('hidden');$('#out').classList.remove('hidden');
+ S.last=r;$('#sharePanel').classList.add('hidden');$('#result').classList.remove('hidden');$('#skel').classList.add('hidden');$('#out').classList.remove('hidden');
  $('#rTag').textContent=`${({text:'텍스트',image:'이미지',video:'영상'})[r.mode]} · ${tName(r.mode,r.target)}`;
  $('#rReq').innerHTML=`요청: <b>${esc(r.req)}</b>`;
  $('#out').innerHTML=highlight(r.prompt);
- const ko=(r.prompt.match(/[\uAC00-\uD7A3]/g)||[]).length;$('#rStat').textContent=`${r.prompt.length.toLocaleString()}자 · ~${Math.round(ko*1.1+(r.prompt.length-ko)/4)} 토큰`;
+ $('#rStat').textContent=statOf(r.prompt);
 }
 async function generate(reqArg){
  const req=(reqArg??q.value).trim();if(!req||busy)return;
@@ -302,9 +442,12 @@ async function generate(reqArg){
  $('#result').classList.remove('hidden');$('#skel').classList.remove('hidden');$('#out').classList.add('hidden');
  $('#rTag').textContent=`${({text:'텍스트',image:'이미지',video:'영상'})[mode]} · ${tName(mode,target)}`;$('#rReq').innerHTML=`요청: <b>${esc(req)}</b>`;$('#rStat').textContent='만드는 중...';
  $('#result').scrollIntoView({behavior:'smooth',block:'nearest'});
- let prompt;
- try{prompt=(await callAI(meta(mode,target,req))).trim().replace(/^```[a-z]*\n?|```$/g,'').trim();}
- catch(e){prompt=fallback(mode,target,req);toast('AI 연결이 원활하지 않아 기본 템플릿으로 만들었어요');}
+ let prompt;const clean=t=>t.trim().replace(/^```[a-z]*\n?|```$/g,'').trim();
+ const outE=$('#out');outE.contentEditable='false';let raf=0,latest='';
+ const onText=t=>{latest=t;if(raf)return;raf=setTimeout(()=>{raf=0;$('#skel').classList.add('hidden');outE.classList.remove('hidden');outE.innerHTML=highlight(clean(latest))+'<span class="caret"></span>';$('#rStat').textContent=statOf(clean(latest))+' · 작성 중';},40);};
+ try{prompt=clean(await callAIStream(meta(mode,target,req),onText));}
+ catch(e){prompt=fallback(mode,target,req);if(e.message!=='NOKEY')toast('AI 연결이 원활하지 않아 기본 템플릿으로 만들었어요');}
+ if(raf)clearTimeout(raf);outE.contentEditable='plaintext-only';
  show({mode,target,req,prompt});
  busy=false;sb.innerHTML=icon;if(!reqArg){q.value='';}autosize();
 }
@@ -312,11 +455,29 @@ $('#btnSend').onclick=()=>generate();
 $('#btnRegen').onclick=()=>S.last&&generate(S.last.req);
 
 /* ---------- ACTIONS ---------- */
-async function copyText(t){try{await navigator.clipboard.writeText(t);}catch{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();}}
+async function copyText(t){try{await Promise.race([navigator.clipboard.writeText(t),new Promise((_,j)=>setTimeout(()=>j(new Error('timeout')),1200))]);}catch{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();}}
+/* 수정 가능한 결과창 */
+const outEl=$('#out');
+function statOf(p){const ko=(p.match(/[\uAC00-\uD7A3]/g)||[]).length;return `${p.length.toLocaleString()}자 · ~${Math.round(ko*1.1+(p.length-ko)/4)} 토큰`;}
+outEl.addEventListener('input',()=>{if(!S.last)return;S.last.prompt=outEl.innerText.replace(/\n$/,'');$('#rStat').textContent=statOf(S.last.prompt);$('#sharePanel').classList.add('hidden');});
+outEl.addEventListener('blur',()=>{if(S.last)outEl.innerHTML=highlight(S.last.prompt);});
 $('#btnCopy').onclick=async()=>{if(!S.last)return;await copyText(S.last.prompt);toast('복사했어요. AI에 붙여넣으세요');};
-$('#btnDown').onclick=()=>{if(!S.last)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([S.last.prompt],{type:'text/plain;charset=utf-8'}));a.download=`prompt-${Date.now()}.txt`;a.click();};
-$('#btnShare').onclick=async()=>{if(!S.last)return;const enc=btoa(unescape(encodeURIComponent(JSON.stringify(S.last))));await copyText(location.href.split('#')[0]+'#p='+enc);toast('공유 링크를 복사했어요');};
-$('#btnSave').onclick=()=>{if(!S.last)return;const h=LS.get('hist',[]);h.unshift({id:Date.now(),...S.last,fav:false,at:new Date().toISOString()});LS.set('hist',h.slice(0,200));toast('보관함에 저장했어요');};
+
+/* 내 PC에 저장 (파일 저장 창) */
+function fileName(){const base=(S.last.req||'프롬프트').replace(/[\\/:*?"<>|\n]/g,' ').trim().slice(0,30)||'프롬프트';return `프롬프트_${base}`;}
+$('#btnSave').onclick=async()=>{if(!S.last)return;const text=S.last.prompt;
+ if(window.showSaveFilePicker){try{const h=await showSaveFilePicker({suggestedName:fileName()+'.txt',types:[{description:'텍스트 파일',accept:{'text/plain':['.txt']}},{description:'마크다운 파일',accept:{'text/markdown':['.md']}}]});const w=await h.createWritable();await w.write(new Blob([text],{type:'text/plain;charset=utf-8'}));await w.close();toast(`"${h.name}"(으)로 저장했어요`);addHist();return;}catch(e){if(e.name==='AbortError')return;}}
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));a.download=fileName()+'.txt';a.click();toast('다운로드 폴더에 저장했어요');addHist();};
+function addHist(){const h=LS.get('hist',[]);h.unshift({id:Date.now(),...S.last,fav:false,at:new Date().toISOString()});LS.set('hist',h.slice(0,200));}
+
+/* 공유 링크: 현재 프롬프트를 그대로 링크에 담음 */
+const b64u={enc:u8=>{let s='';for(let i=0;i<u8.length;i+=0x8000)s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');},dec:s=>{s=s.replace(/-/g,'+').replace(/_/g,'/');const b=atob(s);return Uint8Array.from(b,c=>c.charCodeAt(0));}};
+async function pack(obj){const raw=new TextEncoder().encode(JSON.stringify(obj));if(window.CompressionStream){const cs=new Blob([raw]).stream().pipeThrough(new CompressionStream('deflate-raw'));return 'z'+b64u.enc(new Uint8Array(await new Response(cs).arrayBuffer()));}return 'j'+b64u.enc(raw);}
+async function unpack(s){const t=s[0],d=b64u.dec(s.slice(1));let raw=d;if(t==='z'){const ds=new Blob([d]).stream().pipeThrough(new DecompressionStream('deflate-raw'));raw=new Uint8Array(await new Response(ds).arrayBuffer());}return JSON.parse(new TextDecoder().decode(raw));}
+$('#btnShare').onclick=async()=>{if(!S.last)return;const code=await pack({p:S.last.prompt,r:S.last.req,m:S.last.mode,t:S.last.target});const url=location.href.split('#')[0]+'#s='+code;$('#shareUrl').value=url;$('#sharePanel').classList.remove('hidden');await copyText(url);toast('공유 링크를 복사했어요');};
+$('#btnShareCopy').onclick=async()=>{await copyText($('#shareUrl').value);toast('링크를 복사했어요');};
+$('#btnShareOpen').onclick=()=>window.open($('#shareUrl').value,'_blank');
+$('#btnMine').onclick=()=>{document.body.classList.remove('viewing');history.replaceState(null,'',location.pathname);$('#rTitle').textContent='완성된 프롬프트';$('#result').classList.add('hidden');S.last=null;q.focus();};
 let favOnly=false;
 function renderHist(){const h=LS.get('hist',[]).filter(x=>!favOnly||x.fav);$('#hList').innerHTML=h.length?h.map(x=>`<div class="hitem" data-id="${x.id}"><div class="top"><b>${esc(x.req)}</b><div class="a"><button data-a="fav" class="${x.fav?'fav':''}">${x.fav?'★':'☆'}</button><button data-a="copy">⧉</button><button data-a="del">✕</button></div></div><div class="meta">${({text:'텍스트',image:'이미지',video:'영상'})[x.mode]} · ${tName(x.mode,x.target)} · ${new Date(x.at).toLocaleString('ko-KR',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div></div>`).join(''):`<p class="note" style="text-align:center;margin-top:40px">${favOnly?'즐겨찾기가 없어요.':'저장한 프롬프트가 없어요.'}</p>`;}
 const drawer=o=>{$('#drawer').classList.toggle('open',o);$('#scrim').classList.toggle('on',o);if(o)renderHist();};
@@ -339,7 +500,8 @@ $('#btnTheme').onclick=()=>{const n=document.documentElement.dataset.theme==='da
 /* ---------- BOOT ---------- */
 Object.assign(S.target,LS.get('target',{}));
 renderUI();autosize();
-const hm=location.hash.match(/#p=(.+)/);if(hm){try{const r=JSON.parse(decodeURIComponent(escape(atob(hm[1]))));S.mode=r.mode;renderUI();show(r);history.replaceState(null,'',location.pathname);}catch{}}
+(async()=>{const hs=location.hash.match(/#s=(.+)/);if(hs){try{const d=await unpack(hs[1]);const r={mode:d.m||'text',target:d.t||'general',req:d.r||'',prompt:d.p||''};S.mode=r.mode;renderUI();show(r);document.body.classList.add('viewing');$('#rTitle').textContent='🔗 공유된 프롬프트';document.title='공유된 프롬프트 · PromptStudio';}catch(e){toast('공유 링크를 열 수 없어요');}return;}
+ const hm=location.hash.match(/#p=(.+)/);if(hm){try{const r=JSON.parse(decodeURIComponent(escape(atob(hm[1]))));S.mode=r.mode;renderUI();show(r);history.replaceState(null,'',location.pathname);}catch{}}})();
 </script>
 </body>
 </html>
