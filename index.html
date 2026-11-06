@@ -45,4 +45,301 @@ header{display:flex;align-items:center;justify-content:space-between;padding:20p
 .send:hover{background:var(--grad);filter:brightness(1.08)}
 .send:disabled{opacity:.35;cursor:default;filter:none}
 .model{flex:0 0 auto;height:42px;display:flex;align-items:center;gap:6px;border:0;background:transparent;color:var(--text);font:inherit;font-size:14.5px;font-weight:600;padding:0 12px;border-radius:99px;cursor:pointer;white-space:nowrap}
-.model span{color:var(--muted);font-
+.model span{color:var(--muted);font-weight:500}
+.model:hover{background:var(--panel2)}
+.model svg{width:16px;height:16px;color:var(--muted)}
+.menu{position:absolute;z-index:30;background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:6px;min-width:230px;display:none}
+.menu.open{display:block;animation:pop .14s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(-4px)}}
+.menu button{display:flex;width:100%;align-items:center;gap:10px;border:0;background:transparent;color:var(--text);font:inherit;font-size:14px;padding:10px 12px;border-radius:10px;cursor:pointer;text-align:left}
+.menu button:hover{background:var(--panel2)}
+.menu button small{display:block;color:var(--dim);font-size:12px}
+.menu button .ck{margin-left:auto;color:var(--pri2);visibility:hidden}
+.menu button.on .ck{visibility:visible}
+.menu .ttl{font-size:12px;color:var(--dim);padding:8px 12px 4px;font-weight:600}
+#modelMenu{right:56px;top:calc(100% + 8px)}
+#plusMenu{left:0;top:calc(100% + 8px);max-height:340px;overflow:auto}
+.sugs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:18px}
+.sug{border:1px solid var(--line);background:var(--panel);color:var(--muted);font:inherit;font-size:13.5px;padding:8px 14px;border-radius:99px;cursor:pointer;transition:.15s}
+.sug:hover{color:var(--text);border-color:var(--line2);transform:translateY(-1px)}
+.result{margin-top:30px;background:var(--panel);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;animation:pop .25s ease-out}
+.rh{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 20px;border-bottom:1px solid var(--line)}
+.rh b{font-size:15px}
+.tag{font-size:12px;color:var(--muted);background:var(--panel2);border:1px solid var(--line);padding:4px 9px;border-radius:8px;margin-left:8px;font-weight:600}
+.req{padding:14px 20px 0;color:var(--muted);font-size:13.5px}
+.req b{color:var(--text);font-weight:600}
+pre.out{margin:12px 20px 0;padding:18px;max-height:60vh;overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:14px;font-family:inherit;font-size:14.5px;line-height:1.75;white-space:pre-wrap;word-break:break-word;scrollbar-width:thin;scrollbar-color:var(--line2) transparent}
+[data-theme=light] pre.out{background:#F8FAFE}
+pre.out .tg{color:#A48BFF;font-family:ui-monospace,Consolas,monospace;font-size:13px}
+pre.out .hd{color:#4FD1FF;font-weight:700}
+[data-theme=light] pre.out .hd{color:#2B7BD8}[data-theme=light] pre.out .tg{color:#6A4BE0}
+pre.out .pm{color:#FF8FC8}
+pre.out .ph{background:#FFB54726;color:var(--warn);border-radius:4px;padding:0 3px}
+.skel{padding:18px 20px}
+.skel i{display:block;height:13px;border-radius:7px;margin:11px 0;background:linear-gradient(90deg,var(--panel2),var(--line),var(--panel2));background-size:200% 100%;animation:sh 1.2s linear infinite}
+@keyframes sh{to{background-position:-200% 0}}
+.acts{display:flex;gap:8px;flex-wrap:wrap;padding:16px 20px 20px}
+.btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:10px 14px;border-radius:12px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
+.btn:hover{border-color:var(--line2);transform:translateY(-1px)}
+.btn.primary{background:var(--grad);border:0;color:#fff}
+.btn.sm{padding:7px 10px;font-size:13px}
+.note{font-size:12.5px;color:var(--dim);line-height:1.55;margin-top:8px}
+.drawer{position:fixed;top:0;right:0;height:100vh;width:min(400px,100%);background:var(--panel);border-left:1px solid var(--line);z-index:60;transform:translateX(100%);transition:.3s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
+.drawer.open{transform:none}
+.drawer .list{overflow:auto;padding:14px;flex:1}
+.hitem{border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:12px 14px;margin-bottom:10px;cursor:pointer}
+.hitem:hover{border-color:var(--pri)}
+.hitem .top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.hitem .top b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hitem .meta{font-size:12px;color:var(--dim);margin-top:4px}
+.hitem .a button{border:0;background:none;color:var(--dim);cursor:pointer;font-size:15px;padding:2px 4px}
+.hitem .a button:hover{color:var(--text)}.hitem .a button.fav{color:var(--warn)}
+.scrim{position:fixed;inset:0;background:#0007;z-index:50;opacity:0;pointer-events:none;transition:.25s}
+.scrim.on{opacity:1;pointer-events:auto}
+.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-46%);width:min(480px,calc(100% - 32px));z-index:70;opacity:0;pointer-events:none;transition:.25s;background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
+.modal.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
+.modal .b{padding:18px 20px}
+.field{margin-bottom:14px}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
+.field input,.field select{width:100%;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:12px;padding:11px 13px;font:inherit;font-size:14px;outline:none}
+.toast{position:fixed;bottom:28px;left:50%;transform:translate(-50%,30px);background:var(--text);color:var(--bg);padding:12px 18px;border-radius:12px;font-weight:700;font-size:14px;opacity:0;transition:.25s;z-index:90;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.spin{width:18px;height:18px;border:2px solid #fff6;border-top-color:#fff;border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+footer{text-align:center;color:var(--dim);font-size:12.5px;margin-top:50px}
+.hidden{display:none!important}
+@media (max-width:600px){.hero{padding:5vh 0 20px}.model .lb{display:none}.bar textarea{font-size:16px}#modelMenu{right:0}}
+</style>
+</head>
+<body>
+<div class="bgfx"><i></i><i></i></div>
+<div class="wrap">
+<header>
+  <div class="logo"><div class="mark"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 3l2.2 5.3L20 9l-4.4 3.8L17 19l-5-3-5 3 1.4-6.2L4 9l5.8-.7z"/></svg></div>PromptStudio</div>
+  <div class="hdr">
+    <button class="ib" id="btnHistory" title="보관함"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg></button>
+    <button class="ib" id="btnSettings" title="AI 설정"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></button>
+    <button class="ib" id="btnTheme" title="테마"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>무엇을 도와드릴까요?</h1>
+  <p>하고 싶은 걸 편하게 말하세요. <b style="color:var(--text)">전문가급 프롬프트</b>로 바꿔 드릴게요.</p>
+</section>
+
+<div class="modes" id="modes">
+  <button data-mode="text" class="on">✍️ 텍스트</button>
+  <button data-mode="image">🎨 이미지</button>
+  <button data-mode="video">🎬 영상</button>
+</div>
+
+<div class="bar" id="bar">
+  <button class="round" id="btnPlus" title="템플릿"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+  <textarea id="q" rows="1" placeholder="PromptStudio에게 요청하기"></textarea>
+  <button class="model" id="btnModel"><b id="modelName">ChatGPT</b><span class="lb">최적화</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg></button>
+  <button class="round send" id="btnSend" title="프롬프트 만들기" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+  <div class="menu" id="modelMenu"></div>
+  <div class="menu" id="plusMenu"></div>
+</div>
+<div class="sugs" id="sugs"></div>
+
+<section class="result hidden" id="result">
+  <div class="rh"><div><b>완성된 프롬프트</b><span class="tag" id="rTag"></span></div><span class="tag" id="rStat"></span></div>
+  <div class="req" id="rReq"></div>
+  <div class="skel hidden" id="skel"><i style="width:40%"></i><i></i><i style="width:92%"></i><i style="width:75%"></i><i style="width:85%"></i><i style="width:60%"></i></div>
+  <pre class="out" id="out"></pre>
+  <div class="acts">
+    <button class="btn primary" id="btnCopy">⧉ 복사하기</button>
+    <button class="btn" id="btnRegen">↻ 다시 만들기</button>
+    <button class="btn" id="btnSave">☆ 저장</button>
+    <button class="btn" id="btnShare">🔗 공유</button>
+    <button class="btn" id="btnDown">⬇ .txt</button>
+  </div>
+</section>
+<footer>PromptStudio · 데이터는 내 브라우저에만 저장됩니다.</footer>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer">
+  <div class="rh"><b>📚 보관함</b><div style="display:flex;gap:6px"><button class="btn sm" id="hFav">★ 즐겨찾기</button><button class="btn sm" id="hClose">닫기</button></div></div>
+  <div class="list" id="hList"></div>
+</aside>
+<div class="modal" id="modal">
+  <div class="rh"><b>⚙️ AI 설정</b><button class="btn sm" id="mClose">닫기</button></div>
+  <div class="b">
+    <p class="note" style="color:var(--ok);margin:0 0 14px">✓ 기본 Gemini 키가 내장되어 있어 바로 쓸 수 있어요. 다른 키를 쓰려면 입력하세요.</p>
+    <div class="field"><label>AI 제공사</label><select id="sProv"><option value="gemini">Google Gemini</option><option value="openai">OpenAI</option><option value="anthropic">Anthropic (Claude)</option></select></div>
+    <div class="field"><label>모델 이름</label><input id="sModel" placeholder="gemini-flash-lite-latest"></div>
+    <div class="field"><label>API 키</label><input id="sKey" type="password" placeholder="비워두면 기본 키 사용"></div>
+    <div style="display:flex;gap:8px"><button class="btn primary" id="sSave" style="flex:1;justify-content:center">저장</button><button class="btn" id="sClear">초기화</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const TARGETS={
+ text:[['chatgpt','ChatGPT','마크다운 구조'],['claude','Claude','XML 태그 구조'],['gemini','Gemini','섹션 구조'],['general','모든 AI','범용 구조']],
+ image:[['midjourney','Midjourney','키워드 + 파라미터'],['chatgpt','ChatGPT 이미지','서술형'],['gemini','Gemini 이미지','서술형'],['sd','Stable Diffusion','태그 + 네거티브']],
+ video:[['sora','Sora','OpenAI'],['veo','Veo','Google · 사운드'],['runway','Runway','Gen 시리즈'],['kling','Kling','Kuaishou']]
+};
+const SUGS={
+ text:['📝 블로그 글 써줘','📣 신제품 광고 카피','💻 코드 리뷰해줘','✉️ 정중한 거절 메일','📊 매출 데이터 분석','🎬 유튜브 대본','🛍️ 상세페이지 문구','🎓 어려운 개념 쉽게 설명'],
+ image:['📦 화장품 제품 사진','🌸 감성 애니 일러스트','🔷 카페 로고','🧑‍💼 프로필 사진','🏔️ 판타지 풍경'],
+ video:['☕ 커피 광고 컷','🌊 시네마틱 바다 풍경','📱 서울 야시장 브이로그','🧸 귀여운 3D 로봇']
+};
+const PH={text:'예) 과일에 관한 블로그 글 써줘',image:'예) 벚꽃 아래에서 책 읽는 고양이',video:'예) 햇살 드는 카페에서 라떼아트 만드는 바리스타'};
+const S={mode:'text',target:{text:'chatgpt',image:'midjourney',video:'sora'},last:null};
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const clone=o=>JSON.parse(JSON.stringify(o));
+const MEM={};
+const LS={get:(k,d)=>{try{const v=localStorage.getItem('ps2_'+k);return v===null?d:JSON.parse(v)}catch{return k in MEM?clone(MEM[k]):d}},set:(k,v)=>{try{localStorage.setItem('ps2_'+k,JSON.stringify(v))}catch{MEM[k]=clone(v)}}};
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),1800);}
+const tName=(m,v)=>(TARGETS[m].find(t=>t[0]===v)||[])[1];
+
+/* ---------- UI ---------- */
+function renderUI(){
+ $$('#modes button').forEach(b=>b.classList.toggle('on',b.dataset.mode===S.mode));
+ $('#modelName').textContent=tName(S.mode,S.target[S.mode]);
+ $('#q').placeholder=PH[S.mode];
+ $('#modelMenu').innerHTML='<div class="ttl">어떤 AI에 쓸 프롬프트인가요?</div>'+TARGETS[S.mode].map(([v,n,d])=>`<button data-v="${v}" class="${S.target[S.mode]===v?'on':''}"><span><b>${n}</b><small>${d}</small></span><span class="ck">✓</span></button>`).join('');
+ $('#plusMenu').innerHTML='<div class="ttl">빠른 시작</div>'+SUGS[S.mode].map(s=>`<button data-s="${esc(s)}">${esc(s)}</button>`).join('');
+ $('#sugs').innerHTML=SUGS[S.mode].slice(0,5).map(s=>`<button class="sug" data-s="${esc(s)}">${esc(s)}</button>`).join('');
+}
+const q=$('#q');
+function autosize(){q.style.height='auto';q.style.height=Math.min(q.scrollHeight,220)+'px';$('#btnSend').disabled=!q.value.trim()||busy;}
+q.addEventListener('input',autosize);
+q.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();if(q.value.trim())generate();}});
+const closeMenus=()=>$$('.menu').forEach(m=>m.classList.remove('open'));
+$('#btnModel').onclick=e=>{e.stopPropagation();const o=$('#modelMenu').classList.contains('open');closeMenus();if(!o)$('#modelMenu').classList.add('open');};
+$('#btnPlus').onclick=e=>{e.stopPropagation();const o=$('#plusMenu').classList.contains('open');closeMenus();if(!o)$('#plusMenu').classList.add('open');};
+$('#modelMenu').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.target[S.mode]=b.dataset.v;LS.set('target',S.target);renderUI();closeMenus();toast(`${tName(S.mode,b.dataset.v)}에 맞춰 만들게요`);};
+const useSug=s=>{q.value=s.replace(/^\S+\s/,'');autosize();q.focus();closeMenus();};
+$('#plusMenu').onclick=e=>{const b=e.target.closest('button');if(b)useSug(b.dataset.s);};
+$('#sugs').onclick=e=>{const b=e.target.closest('.sug');if(b)useSug(b.dataset.s);};
+document.addEventListener('click',e=>{if(!e.target.closest('.menu'))closeMenus();});
+$('#modes').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.mode=b.dataset.mode;renderUI();autosize();q.focus();};
+
+/* ---------- AI ---------- */
+const DEFMODEL={openai:'gpt-4o-mini',anthropic:'claude-sonnet-4-5',gemini:'gemini-flash-lite-latest'};
+const BUILTIN={prov:'gemini',model:'gemini-flash-lite-latest',key:"YOUR_GEMINI_API_KEY"};
+const aiCfg=()=>{const c=LS.get('ai',{});return c.key?c:BUILTIN;};
+async function callAI(prompt){
+ const c=aiCfg();const model=c.model||DEFMODEL[c.prov];
+ if(c.prov==='openai'){const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+c.key},body:JSON.stringify({model,messages:[{role:'user',content:prompt}]})});const j=await r.json();if(!r.ok)throw new Error(j.error?.message||r.status);return j.choices[0].message.content;}
+ if(c.prov==='anthropic'){const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':c.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model,max_tokens:2048,messages:[{role:'user',content:prompt}]})});const j=await r.json();if(!r.ok)throw new Error(j.error?.message||r.status);return j.content.map(x=>x.text||'').join('');}
+ const models=[model,...['gemini-flash-lite-latest','gemini-flash-latest'].filter(m=>m!==model)];let lastErr;
+ for(const m of models){const ac=new AbortController();const tm=setTimeout(()=>ac.abort(),25000);let r;
+  try{r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`,{method:'POST',signal:ac.signal,headers:{'Content-Type':'application/json','x-goog-api-key':c.key},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});}catch(e){clearTimeout(tm);lastErr=new Error('응답 시간 초과');continue;}
+  clearTimeout(tm);const j=await r.json();if(r.ok)return j.candidates[0].content.parts.map(x=>x.text||'').join('');lastErr=new Error(j.error?.message||r.status);if(![404,429,500,503].includes(r.status))break;}
+ throw lastErr;
+}
+function meta(mode,target,req){
+ const n=tName(mode,target);
+ if(mode==='text'){
+  const fmt=target==='claude'?'Use XML tags: <role>, <context>, <task>, <instructions>, <output_format>.':target==='gemini'?'Use bold section labels like **역할**, **배경**, **작업**, **작성 지침**, **출력 형식**.':target==='general'?'Use bracket section labels like [역할], [배경], [작업], [작성 지침], [출력 형식].':'Use markdown headings: ### 역할, ### 배경, ### 작업, ### 작성 지침, ### 출력 형식.';
+  return `You are a world-class prompt engineer. Turn the user's casual request into a complete, ready-to-paste prompt for ${n} that will produce an excellent result.
+
+Rules:
+- Write the prompt in the same language as the user's request (Korean if Korean).
+- Assign the most fitting expert role.
+- Infer sensible context, audience, tone, length and output format from the request. Where essential details are unknown, insert short [placeholders] the user can fill in (at most 3).
+- Give 4-7 concrete, specific instructions (structure, tone, length, must-include items, things to avoid).
+- Add a brief self-check instruction at the end of the instructions.
+- ${fmt}
+- Output ONLY the final prompt. No preface, no explanation, no code fences.
+
+User request: ${req}`;
+ }
+ if(mode==='image'){
+  const f=target==='midjourney'?'Format: one line of rich comma-separated English descriptors (subject with concrete details, environment, style, lighting, composition/lens, mood, color palette, quality), then Midjourney parameters at the end: --ar (choose a fitting ratio) --v 7, and --no for unwanted elements if useful.':target==='sd'?'Format: line 1 = comma-separated English tags starting with "masterpiece, best quality", then subject and details. Then a blank line and "Negative prompt: ..." with fitting negatives. Then a blank line and "Size: WxH · Steps: 30 · CFG scale: 7".':'Format: 3-5 natural English sentences describing subject, setting, style, lighting, composition, mood and colors, ending with "Aspect ratio X:Y."';
+  return `You are an expert ${n} prompt engineer. Turn the user's idea (may be Korean) into the best possible ${n} image prompt in English. Make it vivid and specific. ${f} Output ONLY the prompt, no explanation, no code fences.
+
+User idea: ${req}`;
+ }
+ return `You are an expert AI video prompt engineer for ${n}. Turn the user's idea (may be Korean) into an optimized English video prompt for ${n}.
+Format exactly with these labeled lines:
+Scene: ...
+Action: ... (how things move over time)
+Camera: ... (shot size + camera movement)
+Style: ...
+Lighting & mood: ...
+${target==='veo'||target==='sora'?'Audio: ... (ambient sound, effects, dialogue if any)\n':''}Duration: X seconds. Aspect ratio: X:Y.
+Be cinematic and concrete. Output ONLY the prompt, no explanation, no code fences.
+
+User idea: ${req}`;
+}
+function fallback(mode,target,req){
+ if(mode==='text'){const sec=[['역할','당신은 이 분야에서 10년 이상 경력을 가진 최고 수준의 전문가입니다.'],['작업',req],['작성 지침','- 독자가 바로 활용할 수 있도록 구체적이고 실용적으로 작성하세요.\n- 핵심 내용을 먼저 제시하고, 근거와 예시를 덧붙이세요.\n- 전문 용어는 쉬운 말로 풀어 설명하세요.\n- 확실하지 않은 정보는 "확인 필요"라고 표시하세요.\n- 마지막에 요구사항을 모두 충족했는지 스스로 점검하세요.'],['출력 형식','제목과 소제목을 갖춘 구조화된 글로 작성하세요.']];
+  if(target==='claude'){const t={역할:'role',작업:'task','작성 지침':'instructions','출력 형식':'output_format'};return sec.map(([k,v])=>`<${t[k]}>\n${v}\n</${t[k]}>`).join('\n\n');}
+  if(target==='gemini')return sec.map(([k,v])=>`**${k}**\n${v}`).join('\n\n');
+  if(target==='general')return sec.map(([k,v])=>`[${k}]\n${v}`).join('\n\n');
+  return sec.map(([k,v])=>`### ${k}\n${v}`).join('\n\n');}
+ if(mode==='image')return target==='midjourney'?`${req}, highly detailed, cinematic lighting, beautiful composition --ar 1:1 --v 7`:`Create a highly detailed, beautifully lit image of ${req}. Aspect ratio 1:1.`;
+ return `Scene: ${req}.\nCamera: medium shot, slow dolly in.\nStyle: cinematic, realistic.\nDuration: 8 seconds. Aspect ratio: 16:9.`;
+}
+
+/* ---------- GENERATE ---------- */
+let busy=false;
+function highlight(p){let h=esc(p);
+ h=h.replace(/&lt;\/?[a-z_]+&gt;/g,m=>`<span class="tg">${m}</span>`);
+ h=h.replace(/^(#{1,3} .+|\*\*[^*\n]+\*\*|\[[^\]\n]{1,12}\])$/gm,m=>`<span class="hd">${m}</span>`);
+ h=h.replace(/^(Negative prompt:|Size:|Scene:|Action:|Camera:|Style:|Lighting &amp; mood:|Audio:|Duration:)/gm,m=>`<span class="hd">${m}</span>`);
+ h=h.replace(/(--(?:ar|v|s|c|no|style|niji)\b[^-\n]*)/g,m=>`<span class="pm">${m}</span>`);
+ h=h.replace(/\[(?!(?:역할|배경|작업|작성 지침|출력 형식)\])([^\]\n]{1,30})\]/g,'<span class="ph">[$1]</span>');
+ return h;}
+function show(r){
+ S.last=r;$('#result').classList.remove('hidden');$('#skel').classList.add('hidden');$('#out').classList.remove('hidden');
+ $('#rTag').textContent=`${({text:'텍스트',image:'이미지',video:'영상'})[r.mode]} · ${tName(r.mode,r.target)}`;
+ $('#rReq').innerHTML=`요청: <b>${esc(r.req)}</b>`;
+ $('#out').innerHTML=highlight(r.prompt);
+ const ko=(r.prompt.match(/[\uAC00-\uD7A3]/g)||[]).length;$('#rStat').textContent=`${r.prompt.length.toLocaleString()}자 · ~${Math.round(ko*1.1+(r.prompt.length-ko)/4)} 토큰`;
+}
+async function generate(reqArg){
+ const req=(reqArg??q.value).trim();if(!req||busy)return;
+ busy=true;autosize();const sb=$('#btnSend');const icon=sb.innerHTML;sb.innerHTML='<span class="spin"></span>';
+ const mode=reqArg?S.last.mode:S.mode,target=reqArg?S.last.target:S.target[S.mode];
+ $('#result').classList.remove('hidden');$('#skel').classList.remove('hidden');$('#out').classList.add('hidden');
+ $('#rTag').textContent=`${({text:'텍스트',image:'이미지',video:'영상'})[mode]} · ${tName(mode,target)}`;$('#rReq').innerHTML=`요청: <b>${esc(req)}</b>`;$('#rStat').textContent='만드는 중...';
+ $('#result').scrollIntoView({behavior:'smooth',block:'nearest'});
+ let prompt;
+ try{prompt=(await callAI(meta(mode,target,req))).trim().replace(/^```[a-z]*\n?|```$/g,'').trim();}
+ catch(e){prompt=fallback(mode,target,req);toast('AI 연결이 원활하지 않아 기본 템플릿으로 만들었어요');}
+ show({mode,target,req,prompt});
+ busy=false;sb.innerHTML=icon;if(!reqArg){q.value='';}autosize();
+}
+$('#btnSend').onclick=()=>generate();
+$('#btnRegen').onclick=()=>S.last&&generate(S.last.req);
+
+/* ---------- ACTIONS ---------- */
+async function copyText(t){try{await navigator.clipboard.writeText(t);}catch{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();}}
+$('#btnCopy').onclick=async()=>{if(!S.last)return;await copyText(S.last.prompt);toast('복사했어요. AI에 붙여넣으세요');};
+$('#btnDown').onclick=()=>{if(!S.last)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([S.last.prompt],{type:'text/plain;charset=utf-8'}));a.download=`prompt-${Date.now()}.txt`;a.click();};
+$('#btnShare').onclick=async()=>{if(!S.last)return;const enc=btoa(unescape(encodeURIComponent(JSON.stringify(S.last))));await copyText(location.href.split('#')[0]+'#p='+enc);toast('공유 링크를 복사했어요');};
+$('#btnSave').onclick=()=>{if(!S.last)return;const h=LS.get('hist',[]);h.unshift({id:Date.now(),...S.last,fav:false,at:new Date().toISOString()});LS.set('hist',h.slice(0,200));toast('보관함에 저장했어요');};
+let favOnly=false;
+function renderHist(){const h=LS.get('hist',[]).filter(x=>!favOnly||x.fav);$('#hList').innerHTML=h.length?h.map(x=>`<div class="hitem" data-id="${x.id}"><div class="top"><b>${esc(x.req)}</b><div class="a"><button data-a="fav" class="${x.fav?'fav':''}">${x.fav?'★':'☆'}</button><button data-a="copy">⧉</button><button data-a="del">✕</button></div></div><div class="meta">${({text:'텍스트',image:'이미지',video:'영상'})[x.mode]} · ${tName(x.mode,x.target)} · ${new Date(x.at).toLocaleString('ko-KR',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div></div>`).join(''):`<p class="note" style="text-align:center;margin-top:40px">${favOnly?'즐겨찾기가 없어요.':'저장한 프롬프트가 없어요.'}</p>`;}
+const drawer=o=>{$('#drawer').classList.toggle('open',o);$('#scrim').classList.toggle('on',o);if(o)renderHist();};
+$('#btnHistory').onclick=()=>drawer(true);$('#hClose').onclick=()=>drawer(false);
+$('#hFav').onclick=()=>{favOnly=!favOnly;$('#hFav').classList.toggle('primary',favOnly);renderHist();};
+$('#hList').onclick=async e=>{const it=e.target.closest('.hitem');if(!it)return;const id=+it.dataset.id;const h=LS.get('hist',[]);const x=h.find(y=>y.id===id);const a=e.target.dataset.a;
+ if(a==='fav'){x.fav=!x.fav;LS.set('hist',h);return renderHist();}
+ if(a==='del'){LS.set('hist',h.filter(y=>y.id!==id));return renderHist();}
+ if(a==='copy'){await copyText(x.prompt);return toast('복사했어요');}
+ S.mode=x.mode;renderUI();show(x);drawer(false);};
+const modal=o=>{if(o){const c=LS.get('ai',{});$('#sProv').value=c.prov||'gemini';$('#sModel').value=c.model||'';$('#sKey').value=c.key||'';}$('#modal').classList.toggle('open',o);$('#scrim').classList.toggle('on',o);};
+$('#btnSettings').onclick=()=>modal(true);$('#mClose').onclick=()=>modal(false);
+$('#scrim').onclick=()=>{modal(false);drawer(false);};
+$('#sSave').onclick=()=>{LS.set('ai',{prov:$('#sProv').value,model:$('#sModel').value.trim(),key:$('#sKey').value.trim()});modal(false);toast('저장했어요');};
+$('#sClear').onclick=()=>{LS.set('ai',{});$('#sKey').value='';$('#sModel').value='';toast('기본 설정으로 돌렸어요');};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){modal(false);drawer(false);closeMenus();}});
+document.documentElement.dataset.theme=LS.get('theme','dark');
+$('#btnTheme').onclick=()=>{const n=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=n;LS.set('theme',n);};
+
+/* ---------- BOOT ---------- */
+Object.assign(S.target,LS.get('target',{}));
+renderUI();autosize();
+const hm=location.hash.match(/#p=(.+)/);if(hm){try{const r=JSON.parse(decodeURIComponent(escape(atob(hm[1]))));S.mode=r.mode;renderUI();show(r);history.replaceState(null,'',location.pathname);}catch{}}
+</script>
+</body>
+</html>
