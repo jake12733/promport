@@ -203,7 +203,7 @@ body:not(.side-open) .side{transform:translateX(-100%)}
  .modes{overflow-x:auto;justify-content:flex-start;flex-wrap:nowrap;scrollbar-width:none;margin:0 -14px 12px;padding:0 14px}.modes::-webkit-scrollbar{display:none}.modes button{white-space:nowrap;padding:7px 12px;font-size:13px;flex:0 0 auto}
  .thread{padding:14px 12px}.msg{max-width:94%;font-size:14.5px}
 }
-.logoimg{width:38px;height:38px;border-radius:50%;object-fit:cover;background:none;box-shadow:0 4px 14px -4px rgba(212,175,55,.55)}@media(max-width:600px){.logoimg{width:34px;height:34px}}
+.mark.logoimg{width:38px!important;height:38px!important;border-radius:50%!important;background:#0b0f1a url(logo.webp) center/122% no-repeat!important;box-shadow:0 0 0 1px rgba(212,175,55,.35),0 6px 18px -6px rgba(212,175,55,.5)!important}@media(max-width:600px){.mark.logoimg{width:34px!important;height:34px!important}}
 </style>
 <link rel="icon" type="image/webp" href="logo.webp">
 </head>
@@ -220,7 +220,7 @@ body:not(.side-open) .side{transform:translateX(-100%)}
 <div class="side-scrim" id="sideScrim"></div>
 <div class="wrap">
 <header>
-  <div class="logo"><button class="ib" id="btnSide" title="기록 사이드바"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg></button><img class="mark logoimg" src="logo.webp" alt="OWEN WEB">PromptStudio</div>
+  <div class="logo"><button class="ib" id="btnSide" title="기록 사이드바"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg></button><div class="mark logoimg" role="img" aria-label="OWEN WEB"></div>PromptStudio</div>
   <div class="hdr">
     <button class="loginbtn" id="btnLogin">로그인</button>
     <div class="user hidden" id="userBox"><button class="ubtn" id="btnUser"><img id="uAvatar" alt=""><span id="uName"></span></button>
