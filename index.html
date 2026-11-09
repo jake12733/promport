@@ -12,7 +12,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--text);font-family:"Pretendard Variable",Pretendard,-apple-system,"Malgun Gothic",sans-serif;-webkit-font-smoothing:antialiased;word-break:keep-all}
 body{min-height:100vh;overflow-x:hidden}
-.bgvid{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none}
+.bgposter{position:fixed;inset:0;z-index:0;pointer-events:none;background:#0b0d17 url(bg-desktop-poster.webp) center/cover no-repeat}@media (max-aspect-ratio:1/1){.bgposter{background-image:url(bg-mobile-poster.webp)}}.bgvid{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;opacity:0;transition:opacity .8s ease;background:transparent}.bgvid.on{opacity:1}
 .bgov{position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,rgba(11,13,23,.55) 0%,rgba(11,13,23,.75) 60%,rgba(11,13,23,.9) 100%)}
 [data-theme=light] .bgov{background:linear-gradient(180deg,rgba(238,244,253,.6) 0%,rgba(238,244,253,.8) 60%,rgba(238,244,253,.92) 100%)}
 .bgfx{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
@@ -206,9 +206,34 @@ body:not(.side-open) .side{transform:translateX(-100%)}
 .mark.logoimg{width:38px!important;height:38px!important;border-radius:50%!important;background:#0b0f1a url(logo.webp) center/122% no-repeat!important;box-shadow:0 0 0 1px rgba(212,175,55,.35),0 6px 18px -6px rgba(212,175,55,.5)!important}@media(max-width:600px){.mark.logoimg{width:34px!important;height:34px!important}}
 </style>
 <link rel="icon" type="image/webp" href="logo.webp">
+<link rel="preload" as="image" href="bg-desktop-poster.webp" type="image/webp" media="(min-aspect-ratio: 1/1)">
+<link rel="preload" as="image" href="bg-mobile-poster.webp" type="image/webp" media="(max-aspect-ratio: 1/1)">
 </head>
 <body>
-<video class="bgvid" autoplay muted loop playsinline preload="auto"><source src="5925286-uhd_2160_3840_24fps.mp4" type="video/mp4"></video>
+<div class="bgposter" aria-hidden="true"></div>
+<video class="bgvid" id="bgVid" autoplay muted loop playsinline preload="none" disablepictureinpicture disableremoteplayback aria-hidden="true" tabindex="-1"></video>
+<script>
+/* 배경 영상: 포스터 먼저 노출 -> 페이지 로드 후 화면비에 맞는 경량 영상 지연 로딩 -> 재생 시작되면 페이드인 */
+(function(){
+  var v=document.getElementById('bgVid'); if(!v) return;
+  var c=navigator.connection||{};
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches||c.saveData||/2g/.test(c.effectiveType||'')) return; /* 포스터만 사용 */
+  var mq=matchMedia('(max-aspect-ratio: 1/1)'), cur='';
+  function load(){
+    var k=mq.matches?'mobile':'desktop'; if(k===cur) return; cur=k;
+    v.classList.remove('on');
+    v.poster='bg-'+k+'-poster.webp';
+    v.innerHTML='<source src="bg-'+k+'.webm" type=\'video/webm; codecs="vp9"\'><source src="bg-'+k+'.mp4" type="video/mp4">';
+    v.preload='auto'; v.load();
+    var p=v.play(); if(p&&p.catch) p.catch(function(){}); /* 저전력 모드 등 자동재생 차단 시 포스터 유지 */
+  }
+  v.addEventListener('playing',function(){ v.classList.add('on'); });
+  function start(){ (window.requestIdleCallback||function(f){setTimeout(f,200)})(load,{timeout:1500}); }
+  if(document.readyState==='complete') start(); else addEventListener('load',start,{once:true});
+  (mq.addEventListener?mq.addEventListener.bind(mq,'change'):mq.addListener.bind(mq))(function(){ if(cur) load(); });
+  document.addEventListener('visibilitychange',function(){ if(!cur) return; if(document.hidden) v.pause(); else { var p=v.play(); if(p&&p.catch) p.catch(function(){}); } });
+})();
+</script>
 <div class="bgov"></div>
 <aside class="side" id="side">
   <div class="side-top"><button class="newchat" id="sNew"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>새 채팅</button><button class="xbtn side-x" id="sHide" title="사이드바 닫기">✕</button></div>
